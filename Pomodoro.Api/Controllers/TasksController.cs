@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Pomodoro.Api.Contracts.Requests.Task;
-using Pomodoro.Api.Contracts.Responses;
 
 namespace Pomodoro.Api.Controllers
 {
@@ -45,14 +44,6 @@ namespace Pomodoro.Api.Controllers
             var updateResult = _tasksService.UpdateTask(updateTaskRequest);
 
             return Ok(updateResult);
-        }
-
-        public interface ITasksService
-        {
-            List<TaskResponse> GetAllTasks();
-            TaskResponse CreateTask(CreateTaskRequest createTaskRequest);
-            bool UpdateTask(UpdateTaskRequest updateTaskRequest);
-            bool DeleteTask(int taskId);
         }
     }
 }

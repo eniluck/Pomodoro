@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Pomodoro.Api.Contracts.Requests.Task;
-using Pomodoro.Api.Contracts.Responses.Task;
 
 namespace Pomodoro.Api.Controllers
 {
@@ -46,13 +45,5 @@ namespace Pomodoro.Api.Controllers
 
             return Ok(deleteResult);
         }
-    }
-
-    public interface ITaskCategoriesService
-    {
-        List<TaskCategoryResponse> GetAllTasks();
-        TaskCategoryResponse CreateCategory(CreateTaskCategoryRequest categoryRequest);
-        bool UpdateCategory(TaskCategoryRequest categoryRequest);
-        bool DeleteCategory(int categoryId);
     }
 }
