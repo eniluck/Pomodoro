@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Pomodoro.Api.Contracts.Requests.Task;
+using Pomodoro.Api.Contracts.Responses;
+using Pomodoro.Core;
+using Pomodoro.Core.Models;
 
 namespace Pomodoro.Api.Controllers
 {
@@ -8,10 +12,12 @@ namespace Pomodoro.Api.Controllers
     public class TasksController : ControllerBase
     {
         private readonly ITasksService _tasksService;
+        private readonly IMapper _mapper;
 
-        public TasksController(ITasksService tasksService)
+        public TasksController(ITasksService tasksService, IMapper mapper)
         {
             _tasksService = tasksService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -19,15 +25,16 @@ namespace Pomodoro.Api.Controllers
         {
             var tasks = _tasksService.GetAllTasks();
 
-            return Ok(tasks);
+            return Ok(_mapper.Map<List<TaskResponse>>(tasks));
         }
 
         [HttpPost]
         public IActionResult CreateTask(CreateTaskRequest createTaskRequest)
         {
-            var newTask = _tasksService.CreateTask(createTaskRequest);
+            var taskRequest = _mapper.Map<TaskModel>(createTaskRequest);
+            var newTask = _tasksService.CreateTask(taskRequest);
 
-            return Ok(newTask);
+            return Ok(_mapper.Map<TaskResponse>(newTask));
         }
 
         [HttpDelete]
@@ -41,7 +48,8 @@ namespace Pomodoro.Api.Controllers
         [HttpPut]
         public IActionResult UpdateTask(UpdateTaskRequest updateTaskRequest)
         {
-            var updateResult = _tasksService.UpdateTask(updateTaskRequest);
+            var taskRequest = _mapper.Map<TaskModel>(updateTaskRequest);
+            var updateResult = _tasksService.UpdateTask(taskRequest);
 
             return Ok(updateResult);
         }
