@@ -1,3 +1,7 @@
+using Pomodoro.Api;
+using Pomodoro.BL;
+using Pomodoro.Core;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<ITaskCategoriesService, TaskCategoriesService>();
+builder.Services.AddAutoMapper(typeof(TaskCategoriesProfile));
 
 var app = builder.Build();
 

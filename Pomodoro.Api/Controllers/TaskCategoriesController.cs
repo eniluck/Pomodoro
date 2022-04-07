@@ -23,7 +23,7 @@ namespace Pomodoro.Api.Controllers
         [HttpGet]
         public IActionResult GetAllCategories()
         {
-            var catagories = _taskCategoriesService.GetAllTasks();
+            var catagories = _taskCategoriesService.GetAllTaskCategories();
 
             return Ok(_mapper.Map<List<TaskCategoryResponse>>(catagories));
         }
