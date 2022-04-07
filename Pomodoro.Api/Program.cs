@@ -1,6 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using Pomodoro.Api;
 using Pomodoro.BL;
 using Pomodoro.Core;
+using Pomodoro.DAL.MSSQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<ITaskCategoriesService, TaskCategoriesService>();
 builder.Services.AddAutoMapper(typeof(TaskCategoriesProfile));
+
+builder.Services.AddDbContext<PomodoroDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("PomodoroConnection"),
+        x => x.MigrationsAssembly("Pomodoro.DAL.MSSQL")));
 
 var app = builder.Build();
 
