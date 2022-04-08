@@ -11,5 +11,6 @@ namespace Pomodoro.DAL.Postgres
         }
 
         public DbSet<TaskCategoryEntity> TaskCategories { get; set; }
+        public DbSet<TaskEntity> Tasks { get; set; }
     }
 }
