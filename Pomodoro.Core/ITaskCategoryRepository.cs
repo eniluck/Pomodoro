@@ -1,6 +1,6 @@
 ﻿using Pomodoro.Core.Models;
 
-namespace Pomodoro.DAL.MSSQL.Repositories
+namespace Pomodoro.Core
 {
     public interface ITaskCategoryRepository
     {

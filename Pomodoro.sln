@@ -12,9 +12,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomodoro.Core", "Pomodoro.Core\Pomodoro.Core.csproj", "{786F9553-BF60-4BFF-ABA5-2B19DC7A324A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pomodoro.BL", "Pomodoro.BL\Pomodoro.BL.csproj", "{3131B581-D2F3-428F-B751-8710C84393D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomodoro.BL", "Pomodoro.BL\Pomodoro.BL.csproj", "{3131B581-D2F3-428F-B751-8710C84393D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pomodoro.DAL.MSSQL", "Pomodoro.DAL.MSSQL\Pomodoro.DAL.MSSQL.csproj", "{522C0DED-8B80-4116-830C-49359FDF6702}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pomodoro.DAL.Postgres", "Pomodoro.DAL.Postgres\Pomodoro.DAL.Postgres.csproj", "{87232D8D-9876-4296-9430-38FE0E27EDDF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,10 +34,10 @@ Global
 		{3131B581-D2F3-428F-B751-8710C84393D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3131B581-D2F3-428F-B751-8710C84393D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3131B581-D2F3-428F-B751-8710C84393D1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{522C0DED-8B80-4116-830C-49359FDF6702}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{522C0DED-8B80-4116-830C-49359FDF6702}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{522C0DED-8B80-4116-830C-49359FDF6702}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{522C0DED-8B80-4116-830C-49359FDF6702}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87232D8D-9876-4296-9430-38FE0E27EDDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87232D8D-9876-4296-9430-38FE0E27EDDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87232D8D-9876-4296-9430-38FE0E27EDDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87232D8D-9876-4296-9430-38FE0E27EDDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
