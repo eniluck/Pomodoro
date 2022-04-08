@@ -4,9 +4,9 @@ namespace Pomodoro.Core
 {
     public interface ITaskCategoriesService
     {
-        List<TaskCategory> GetAllTaskCategories();
-        TaskCategory CreateCategory(TaskCategory categoryRequest);
-        bool UpdateCategory(TaskCategory categoryRequest);
-        bool DeleteCategory(int categoryId);
+        Task<List<TaskCategory>> GetAllTaskCategoriesAsync();
+        Task<TaskCategory> AddCategoryAsync(TaskCategory categoryRequest);
+        Task<bool> UpdateCategory(TaskCategory categoryRequest);
+        Task<bool> DeleteCategory(int categoryId);
     }
 }

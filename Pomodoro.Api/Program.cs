@@ -3,6 +3,7 @@ using Pomodoro.Api;
 using Pomodoro.BL;
 using Pomodoro.Core;
 using Pomodoro.DAL.Postgres;
+using Pomodoro.DAL.Postgres.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<ITaskCategoriesService, TaskCategoriesService>();
-builder.Services.AddAutoMapper(typeof(TaskCategoriesProfile));
+builder.Services.AddScoped<ITaskCategoryRepository, TaskCategoryRepository>();
+builder.Services.AddAutoMapper(typeof(MappingProfle), typeof(MappingDBProfile));
 
 builder.Services.AddDbContext<PomodoroDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PomodoroConnection"),

@@ -5,36 +5,31 @@ namespace Pomodoro.BL
 {
     public class TaskCategoriesService : ITaskCategoriesService
     {
-        public TaskCategory CreateCategory(TaskCategory categoryRequest)
+        private readonly ITaskCategoryRepository _taskCategoryRepository;
+
+        public TaskCategoriesService(ITaskCategoryRepository taskCategoryRepository)
         {
-            throw new NotImplementedException();
+            _taskCategoryRepository = taskCategoryRepository;
         }
 
-        public bool DeleteCategory(int categoryId)
+        public async Task<TaskCategory> AddCategoryAsync(TaskCategory categoryRequest)
         {
-            throw new NotImplementedException();
+            return await _taskCategoryRepository.AddAsync(categoryRequest);
         }
 
-        public List<TaskCategory> GetAllTaskCategories()
+        public async Task<bool> DeleteCategory(int categoryId)
         {
-            return new List<TaskCategory>()
-            {
-                new TaskCategory()
-                {
-                    Name = "Задача 1",
-                    Id = 1
-                },
-                new TaskCategory()
-                {
-                    Name = "Задача 2",
-                    Id = 2
-                },
-            };
+            return await _taskCategoryRepository.RemoveAsync(categoryId);
         }
 
-        public bool UpdateCategory(TaskCategory categoryRequest)
+        public async Task<List<TaskCategory>> GetAllTaskCategoriesAsync()
         {
-            throw new NotImplementedException();
+            return await _taskCategoryRepository.GetAllAsync();
+        }
+
+        public async Task<bool> UpdateCategory(TaskCategory categoryRequest)
+        {
+            return await _taskCategoryRepository.UpdateAsync(categoryRequest);
         }
     }
 }
