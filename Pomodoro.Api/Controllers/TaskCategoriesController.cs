@@ -19,7 +19,7 @@ namespace Pomodoro.Api.Controllers
             _taskCategoriesService = taskCategoriesService;
             _mapper = mapper;
         }
-        
+
         [HttpGet("GetAllCategories")]
         [ProducesResponseType(typeof(List<TaskCategoryResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllCategories()

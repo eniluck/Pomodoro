@@ -4,10 +4,14 @@ namespace Pomodoro.Core
 {
     public interface ITaskCategoryRepository
     {
-        Task<TaskCategory> AddAsync(TaskCategory taskCategory);
+        Task<TaskCategory?> AddAsync(TaskCategory taskCategory);
+
         Task<List<TaskCategory>> GetAllAsync();
+
         Task<TaskCategory> GetAsync(int id);
+
         Task<bool> RemoveAsync(int id);
+
         Task<bool> UpdateAsync(TaskCategory taskCategory);
     }
 }

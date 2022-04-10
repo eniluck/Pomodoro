@@ -5,7 +5,7 @@ using Pomodoro.Core.Models;
 
 namespace Pomodoro.Api
 {
-    public class MappingProfle: Profile
+    public class MappingProfle : Profile
     {
         public MappingProfle()
         {

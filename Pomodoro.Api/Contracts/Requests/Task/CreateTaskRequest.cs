@@ -2,7 +2,8 @@
 {
     public class CreateTaskRequest
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
+
         public TaskCategoryRequest? Category { get; set; }
     }
 }

@@ -62,15 +62,19 @@ namespace Pomodoro.DAL.Postgres.Repositories
             return updatedEntitesCount > 0;
         }
 
-        public async Task<TaskCategory> AddAsync(TaskCategory taskCategory)
+        public async Task<TaskCategory?> AddAsync(TaskCategory taskCategory)
         {
             var taskCategoryEntity = _mapper.Map<TaskCategoryEntity>(taskCategory);
             _pomodoroDbContext.Add(taskCategoryEntity);
             var addeddEntitesCount = await _pomodoroDbContext.SaveChangesAsync();
             if (addeddEntitesCount > 0)
+            {
                 return _mapper.Map<TaskCategory>(taskCategoryEntity);
+            }
             else
+            {
                 return null; //Task.FromResult(null);
+            }
         }
     }
 }
