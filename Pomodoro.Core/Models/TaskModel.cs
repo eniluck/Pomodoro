@@ -1,15 +1,35 @@
 ﻿namespace Pomodoro.Core.Models
 {
-    public class TaskModel
+    public record TaskModel
     {
-        public int Id { get; set; }
+        private TaskModel(int id, string name, TaskCategory? category, TaskStatusModel status, int pomodoroEstimation)
+        {
+            Id = id;
+            Name = name;
+            Category = category;
+            Status = status;
+            PomodoroEstimation = pomodoroEstimation;
+        }
 
-        public string? Name { get; set; }
+        public int Id { get; }
 
-        public TaskCategory? Category { get; set; }
+        public string Name { get; }
 
-        public TaskStatusModel Status { get; set; }
+        public TaskCategory? Category { get; }
 
-        public int Count { get; set; }
+        public TaskStatusModel Status { get; }
+
+        public int PomodoroEstimation { get; }
+
+        public static (TaskModel? Result, string[] Errors) Create(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return (null, new[] { "Name cannot be null or whitespace." });
+            }
+
+            var result = new TaskModel(0, name, null, TaskStatusModel.InList, 1);
+            return (result, Array.Empty<string>());
+        }
     }
 }

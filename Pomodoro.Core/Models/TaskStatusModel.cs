@@ -2,8 +2,8 @@
 {
     public enum TaskStatusModel
     {
-        Ready = 0,
+        InList = 0,
         InProgress = 1,
-        InList = 2
+        Ready = 2
     }
 }

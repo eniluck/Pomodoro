@@ -4,6 +4,7 @@ using Pomodoro.Api.Contracts.Requests.Task;
 using Pomodoro.Api.Contracts.Responses;
 using Pomodoro.Core;
 using Pomodoro.Core.Models;
+using System.Linq;
 
 namespace Pomodoro.Api.Controllers
 {
@@ -13,11 +14,13 @@ namespace Pomodoro.Api.Controllers
     {
         private readonly ITasksService _tasksService;
         private readonly IMapper _mapper;
+        private readonly ILogger<TasksController> _logger;
 
-        public TasksController(ITasksService tasksService, IMapper mapper)
+        public TasksController(ILogger<TasksController> logger, IMapper mapper)//, ITasksService tasksService)
         {
-            _tasksService = tasksService;
+           // _tasksService = tasksService;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -31,10 +34,16 @@ namespace Pomodoro.Api.Controllers
         [HttpPost]
         public IActionResult CreateTask(CreateTaskRequest createTaskRequest)
         {
-            var taskRequest = _mapper.Map<TaskModel>(createTaskRequest);
-            var newTask = _tasksService.CreateTask(taskRequest);
+            var (newTask, errors) = TaskModel.Create(createTaskRequest.Name);
+            if (errors.Any() || newTask is null)
+            {
+                _logger.LogError("{errors}", errors);
+                return BadRequest(errors);
+            }
 
-            return Ok(_mapper.Map<TaskResponse>(newTask));
+            //var createdTask = _tasksService.CreateTask(newTask);
+
+            return Ok(newTask);
         }
 
         [HttpDelete]
