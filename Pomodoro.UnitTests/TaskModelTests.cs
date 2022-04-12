@@ -9,13 +9,13 @@ namespace Pomodoro.UnitTests
         [Fact]
         public void Create_ShouldReturnTaskModel()
         {
-            //arrange 
+            // arrange
             var fixture = new Fixture();
 
-            //act
+            // act
             var (newTask, errors) = TaskModel.Create(fixture.Create<string>());
 
-            //assert
+            // assert
             Assert.NotNull(newTask);
             Assert.Empty(errors);
         }
@@ -23,31 +23,31 @@ namespace Pomodoro.UnitTests
         [Fact]
         public void Create_ShouldReturnTheSameModel()
         {
-            //arrange 
+            // arrange
             var fixture = new Fixture();
             var name = fixture.Create<string>();
 
-            //act
+            // act
             var (newTask1, _) = TaskModel.Create(name);
             var (newTask2, _) = TaskModel.Create(name);
 
-            //assert
+            // assert
             Assert.True(newTask1 == newTask2);
         }
 
         [Fact]
         public void Create_ShouldReturnNotTheSameModel()
         {
-            //arrange 
+            // arrange
             var fixture = new Fixture();
             var name1 = fixture.Create<string>();
             var name2 = fixture.Create<string>();
 
-            //act
+            // act
             var (newTask1, _) = TaskModel.Create(name1);
             var (newTask2, _) = TaskModel.Create(name2);
 
-            //assert
+            // assert
             Assert.False(newTask1 == newTask2);
         }
     }
