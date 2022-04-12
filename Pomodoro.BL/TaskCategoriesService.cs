@@ -27,6 +27,11 @@ namespace Pomodoro.BL
             return await _taskCategoryRepository.GetAllAsync();
         }
 
+        public async Task<TaskCategory> GetAsync(int categoryId)
+        {
+            return await _taskCategoryRepository.GetAsync(categoryId);
+        }
+
         public async Task<bool> UpdateCategory(TaskCategory categoryRequest)
         {
             return await _taskCategoryRepository.UpdateAsync(categoryRequest);

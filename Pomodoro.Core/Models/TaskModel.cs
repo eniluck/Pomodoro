@@ -21,14 +21,41 @@
 
         public int PomodoroEstimation { get; }
 
-        public static (TaskModel? Result, string[] Errors) Create(string name)
+        public static (TaskModel? Result, string[] Errors) Create(string name, TaskCategory? taskCategory)
         {
-            if (string.IsNullOrWhiteSpace(name))
+            return Create(0, name, taskCategory, TaskStatusModel.InList, 1);
+        }
+
+        public static (TaskModel? Result, string[] Errors) Create(int id, string name, TaskCategory? taskCategory, TaskStatusModel taskStatus, int pomodoroEstimation)
+        {
+            var errors = new List<string>();
+
+            if (id < 0)
             {
-                return (null, new[] { "Name cannot be null or whitespace." });
+                errors.Add($"{nameof(id)} must be positive.");
             }
 
-            var result = new TaskModel(0, name, null, TaskStatusModel.InList, 1);
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                errors.Add($"{nameof(name)} cannot be null or whitespace." );
+            }
+
+            if (!Enum.IsDefined(typeof(TaskStatusModel), taskStatus))
+            {
+                errors.Add($"{nameof(taskStatus)} must be defined in enum.");
+            }
+
+            if (pomodoroEstimation < 0)
+            {
+                errors.Add($"{nameof(pomodoroEstimation)} must be positive.");
+            }
+
+            if (errors.Count > 0)
+            {
+                return (null, errors.ToArray());
+            }
+
+            var result = new TaskModel(id, name, taskCategory, taskStatus, pomodoroEstimation);
             return (result, Array.Empty<string>());
         }
     }
