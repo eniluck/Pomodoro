@@ -7,6 +7,6 @@ namespace Pomodoro.Api.Contracts.Requests.Task
         [Required]
         public string Name { get; set; } = string.Empty;
 
-        public TaskCategoryRequest? Category { get; set; }
+        public int? CategoryId { get; set; }
     }
 }

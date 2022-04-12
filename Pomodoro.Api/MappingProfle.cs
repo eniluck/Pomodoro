@@ -12,6 +12,12 @@ namespace Pomodoro.Api
             CreateMap<TaskCategory, TaskCategoryResponse>();
             CreateMap<CreateTaskCategoryRequest, TaskCategory>();
             CreateMap<TaskCategoryRequest, TaskCategory>();
+
+            CreateMap<TaskModel, TaskResponse>();
+            CreateMap<CreateTaskRequest, TaskModel>();
+            CreateMap<UpdateTaskRequest, TaskModel>();
+
+            CreateMap<TaskResponse, TaskModel>();
         }
     }
 }
