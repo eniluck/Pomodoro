@@ -1,8 +1,11 @@
-﻿namespace Pomodoro.Api.Contracts.Requests.Task
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Pomodoro.Api.Contracts.Requests.Task
 {
     public class TaskCategoryRequest
     {
         public int Id { get; set; }
-        public string? Name { get; set; }
+
+        public string Name { get; set; } = string.Empty;
     }
 }

@@ -10,6 +10,9 @@ namespace Pomodoro.DAL.Postgres
         {
             CreateMap<TaskCategoryEntity, TaskCategory>();
             CreateMap<TaskCategory, TaskCategoryEntity>();
+
+            CreateMap<TaskEntity, TaskModel>();
+            CreateMap<TaskModel, TaskEntity>();
         }
     }
 }

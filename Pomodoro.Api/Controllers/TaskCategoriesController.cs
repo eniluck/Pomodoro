@@ -13,11 +13,13 @@ namespace Pomodoro.Api.Controllers
     {
         private readonly ITaskCategoriesService _taskCategoriesService;
         private readonly IMapper _mapper;
+        private readonly ILogger<TaskCategoriesController> _logger;
 
-        public TaskCategoriesController(ITaskCategoriesService taskCategoriesService, IMapper mapper)
+        public TaskCategoriesController(ILogger<TaskCategoriesController> logger, IMapper mapper, ITaskCategoriesService taskCategoriesService)
         {
             _taskCategoriesService = taskCategoriesService;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet("GetAllCategories")]
@@ -31,18 +33,31 @@ namespace Pomodoro.Api.Controllers
 
         [HttpPost("AddCategory")]
         [ProducesResponseType(typeof(TaskCategoryResponse), StatusCodes.Status200OK)]
-        public async Task<IActionResult> AddCategory(CreateTaskCategoryRequest categoryRequest)
+        public async Task<IActionResult> AddCategory(CreateTaskCategoryRequest taskCategoryRequest)
         {
-            var request = _mapper.Map<TaskCategory>(categoryRequest);
-            var newCategory = await _taskCategoriesService.AddCategoryAsync(request);
+            var (newCategory, errors) = TaskCategory.Create(taskCategoryRequest.Name);
+            if (errors.Any() || newCategory is null)
+            {
+                _logger.LogError("{errors}", errors);
+                return BadRequest(errors);
+            }
 
-            return Ok(_mapper.Map<TaskCategoryResponse>(newCategory));
+            var createdCategory = await _taskCategoriesService.AddCategoryAsync(newCategory);
+
+            return Ok(_mapper.Map<TaskCategoryResponse>(createdCategory));
         }
 
         [HttpPut("UpdateCategory")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateCategory(TaskCategoryRequest categoryRequest)
         {
+            var (newCategory, errors) = TaskCategory.Create(categoryRequest.Id, categoryRequest.Name);
+            if (errors.Any() || newCategory is null)
+            {
+                _logger.LogError("{errors}", errors);
+                return BadRequest(errors);
+            }
+
             var request = _mapper.Map<TaskCategory>(categoryRequest);
             var updateResult = await _taskCategoriesService.UpdateCategory(request);
 

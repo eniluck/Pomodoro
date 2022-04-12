@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Pomodoro.DAL.Postgres;
@@ -11,9 +12,10 @@ using Pomodoro.DAL.Postgres;
 namespace Pomodoro.DAL.Postgres.Migrations
 {
     [DbContext(typeof(PomodoroDbContext))]
-    partial class PomodoroDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220412175404_TaskEntityUpdate")]
+    partial class TaskEntityUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,7 +69,7 @@ namespace Pomodoro.DAL.Postgres.Migrations
 
             modelBuilder.Entity("Pomodoro.DAL.Postgres.Entities.TaskEntity", b =>
                 {
-                    b.HasOne("Pomodoro.DAL.Postgres.Entities.TaskCategoryEntity", "Category")
+                    b.HasOne("Pomodoro.DAL.Postgres.Entities.TaskEntity", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId");
 
