@@ -15,15 +15,17 @@
 
         public string Name { get; }
 
-        public TaskCategory? Category { get; }
+        public TaskCategory? Category { get; init; }
+
+        //public void AddCategory(TaskCategory? taskCategory) { Category = taskCategory; }
 
         public TaskStatusModel Status { get; }
 
         public int PomodoroEstimation { get; }
 
-        public static (TaskModel? Result, string[] Errors) Create(string name, TaskCategory? taskCategory)
+        public static (TaskModel? Result, string[] Errors) Create(string name)
         {
-            return Create(0, name, taskCategory, TaskStatusModel.InList, 1);
+            return Create(0, name, null, TaskStatusModel.InList, 1);
         }
 
         public static (TaskModel? Result, string[] Errors) Create(int id, string name, TaskCategory? taskCategory, TaskStatusModel taskStatus, int pomodoroEstimation)
