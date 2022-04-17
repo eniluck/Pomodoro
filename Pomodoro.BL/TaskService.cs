@@ -6,15 +6,38 @@ namespace Pomodoro.BL
     public class TaskService : ITasksService
     {
         private readonly ITaskRepository _taskRepository;
+        private readonly ITaskCategoryRepository _taskCategoryRepository;
 
-        public TaskService(ITaskRepository taskRepository)
+        public TaskService(
+            ITaskRepository taskRepository,
+            ITaskCategoryRepository taskCategoryRepository)
         {
             _taskRepository = taskRepository;
+            _taskCategoryRepository = taskCategoryRepository;
         }
 
-        public async Task<TaskModel> CreateTaskAsync(TaskModel taskModel)
+        public async Task<(TaskModel? Result, string[] Errors)> CreateTaskAsync(TaskModel taskModel, int? categoryId)
         {
-            return await _taskRepository.AddAsync(taskModel);
+            TaskCategory? existedCategory = null;
+
+            if (categoryId is not null)
+            {
+                existedCategory = await _taskCategoryRepository.GetAsync(categoryId.Value);
+
+                if (existedCategory is null)
+                {
+                    var error = new string[] { "Не найдена категория по Id" };
+                    return (null, error);
+                }
+            }
+
+            /*taskModel.Category = existedCategory;
+
+            taskModel.AddCategory(existedCategory);*/
+
+            return (await _taskRepository.AddAsync(
+                taskModel with { Category = existedCategory }),
+                Array.Empty<string>());
         }
 
         public async Task<bool> DeleteTaskAsync(int taskId)

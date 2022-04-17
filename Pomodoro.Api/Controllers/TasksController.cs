@@ -24,7 +24,7 @@ namespace Pomodoro.Api.Controllers
             _logger = logger;
         }
 
-        [HttpGet("GetAllTasks")]
+        [HttpGet]
         public async Task<IActionResult> GetAllTasks()
         {
             var tasks = await _tasksService.GetAllTasksAsync();
@@ -35,30 +35,21 @@ namespace Pomodoro.Api.Controllers
         [HttpPost("CreateTask")]
         public async Task<IActionResult> CreateTask(CreateTaskRequest createTaskRequest)
         {
-            TaskCategory? existedCategory = null;
-
-            if (createTaskRequest.CategoryId is not null)
-            {
-                existedCategory = await _taskCategoriesService.GetAsync(createTaskRequest.CategoryId.Value);
-
-                if (existedCategory is null)
-                {
-                    var error = new string[] { "Не найдена категория по Id" };
-                    _logger.LogError("{errors}", error);
-                    return BadRequest(error);
-                }
-            }
-
-            var (newTask, errors) = TaskModel.Create(createTaskRequest.Name, existedCategory);
+            var (newTask, errors) = TaskModel.Create(createTaskRequest.Name);
             if (errors.Any() || newTask is null)
             {
                 _logger.LogError("{errors}", errors);
                 return BadRequest(errors);
             }
 
-            var createdTask = await _tasksService.CreateTaskAsync(newTask);
+            var createdTask = await _tasksService.CreateTaskAsync(newTask, createTaskRequest.CategoryId);
+            if (createdTask.Errors.Any() || createdTask.Result is null)
+            {
+                _logger.LogError("{errors}", errors);
+                return BadRequest(createdTask.Errors);
+            }
 
-            return Ok(createdTask);
+            return Ok(createdTask.Result);
         }
 
         [HttpDelete("DeleteTask")]
