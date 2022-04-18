@@ -26,7 +26,7 @@
                 errors.Add($"{nameof(Name)} cannot be null or whitespace.");
             }
 
-            if (id <= 0)
+            if (id < 0)
             {
                 errors.Add($"{nameof(id)} must be positive.");
             }
