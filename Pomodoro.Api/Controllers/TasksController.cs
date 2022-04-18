@@ -36,7 +36,7 @@ namespace Pomodoro.Api.Controllers
             return Ok(_mapper.Map<List<TaskModel>, List<GetTaskResponse>>(tasks));
         }
 
-        [HttpPost("CreateTask")]
+        [HttpPost]
         public async Task<IActionResult> CreateTask(CreateTaskRequest createTaskRequest)
         {
             var (newTask, errors) = TaskModel.Create(createTaskRequest.Name);
@@ -56,15 +56,15 @@ namespace Pomodoro.Api.Controllers
             return Ok(createdTask.Result);
         }
 
-        [HttpDelete("DeleteTask")]
-        public async Task<IActionResult> DeleteTask(int taskId)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteTask([FromRoute]int taskId)
         {
             var deleteResult = await _tasksService.DeleteTaskAsync(taskId);
 
             return Ok(deleteResult);
         }
 
-        [HttpPut("UpdateTask/{id:int}")]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateTask([FromRoute]int id, [FromBody]PutTaskRequest updateTaskRequest)
         {
             TaskCategory? existedCategory = null;
