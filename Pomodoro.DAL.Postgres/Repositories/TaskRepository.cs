@@ -23,7 +23,7 @@ namespace Pomodoro.DAL.Postgres.Repositories
                 .AsNoTracking()
                 .ToListAsync();
 
-            return _mapper.Map<List<TaskModel>>(tasks);
+            return _mapper.Map<List<TaskEntity>, List<TaskModel>>(tasks);
         }
 
         public async Task<TaskModel> GetAsync(int id)
@@ -33,7 +33,7 @@ namespace Pomodoro.DAL.Postgres.Repositories
                 .Where(t => t.Id == id)
                 .FirstOrDefaultAsync();
 
-            return _mapper.Map<TaskModel>(task);
+            return _mapper.Map<TaskEntity, TaskModel>(task);
         }
 
         public async Task<bool> RemoveAsync(int id)
@@ -54,7 +54,7 @@ namespace Pomodoro.DAL.Postgres.Repositories
 
         public async Task<bool> UpdateAsync(TaskModel task)
         {
-            var taskEntity = _mapper.Map<TaskEntity>(task);
+            var taskEntity = _mapper.Map<TaskModel, TaskEntity>(task);
             _pomodoroDbContext.Entry(taskEntity.Category).State = EntityState.Unchanged;
             _pomodoroDbContext.Tasks.Update(taskEntity);
 
@@ -64,7 +64,7 @@ namespace Pomodoro.DAL.Postgres.Repositories
 
         public async Task<TaskModel> AddAsync(TaskModel task)
         {
-            var taskEntity = _mapper.Map<TaskEntity>(task);
+            var taskEntity = _mapper.Map<TaskModel, TaskEntity>(task);
             _pomodoroDbContext.Tasks.Add(taskEntity);
 
             if (taskEntity.Category is not null)
@@ -75,7 +75,7 @@ namespace Pomodoro.DAL.Postgres.Repositories
             var addeddEntitesCount = await _pomodoroDbContext.SaveChangesAsync();
             if (addeddEntitesCount > 0)
             {
-                return _mapper.Map<TaskModel>(taskEntity);
+                return _mapper.Map<TaskEntity, TaskModel>(taskEntity);
             }
             else
             {
