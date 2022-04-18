@@ -9,31 +9,31 @@ namespace Pomodoro.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TaskCategoriesController : ControllerBase
+    public class CategoriesController : ControllerBase
     {
         private readonly ITaskCategoriesService _taskCategoriesService;
         private readonly IMapper _mapper;
-        private readonly ILogger<TaskCategoriesController> _logger;
+        private readonly ILogger<CategoriesController> _logger;
 
-        public TaskCategoriesController(ILogger<TaskCategoriesController> logger, IMapper mapper, ITaskCategoriesService taskCategoriesService)
+        public CategoriesController(ILogger<CategoriesController> logger, IMapper mapper, ITaskCategoriesService taskCategoriesService)
         {
             _taskCategoriesService = taskCategoriesService;
             _mapper = mapper;
             _logger = logger;
         }
 
-        [HttpGet("GetAllCategories")]
-        [ProducesResponseType(typeof(List<CategoryResponse>), StatusCodes.Status200OK)]
+        [HttpGet("")]
+        [ProducesResponseType(typeof(List<GetCategoryResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllCategories()
         {
             var catagories = await _taskCategoriesService.GetAllTaskCategoriesAsync();
 
-            return Ok(_mapper.Map<List<CategoryResponse>>(catagories));
+            return Ok(_mapper.Map<List<GetCategoryResponse>>(catagories));
         }
 
         [HttpPost("AddCategory")]
-        [ProducesResponseType(typeof(CategoryResponse), StatusCodes.Status200OK)]
-        public async Task<IActionResult> AddCategory(CreateCategoryRequest taskCategoryRequest)
+        [ProducesResponseType(typeof(GetCategoryResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> CreateCategory(CreateCategoryRequest taskCategoryRequest)
         {
             var (newCategory, errors) = TaskCategory.Create(taskCategoryRequest.Name);
             if (errors.Any() || newCategory is null)
@@ -44,7 +44,7 @@ namespace Pomodoro.Api.Controllers
 
             var createdCategory = await _taskCategoriesService.AddCategoryAsync(newCategory);
 
-            return Ok(_mapper.Map<CategoryResponse>(createdCategory));
+            return Ok(_mapper.Map<GetCategoryResponse>(createdCategory));
         }
 
         [HttpPut("UpdateCategory/{id:int}")]
