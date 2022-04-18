@@ -19,12 +19,18 @@ using Xunit;
 
 namespace Pomodoro.IntegrationTests
 {
-    public class TasksControllerTests : IClassFixture<TestAppFactory>
+    public class TasksControllerTests
     {
         private readonly HttpClient _client;
 
-        public TasksControllerTests(TestAppFactory factory)
+        public TasksControllerTests()
         {
+            var factory = new WebApplicationFactory<Program>()
+                .WithWebHostBuilder(x =>
+                {
+                    x.UseEnvironment("Tests");
+                });
+
             _client = factory.CreateClient();
         }
 
