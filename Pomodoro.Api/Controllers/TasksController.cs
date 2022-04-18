@@ -62,13 +62,13 @@ namespace Pomodoro.Api.Controllers
         [HttpPut("{id:int}")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string[]), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateTask([FromRoute]int id, [FromBody]PutTaskRequest updateTaskRequest)
+        public async Task<IActionResult> UpdateTask([FromRoute]int id, [FromBody]PutTaskRequest putTaskRequest)
         {
             TaskCategory? existedCategory = null;
 
-            if (updateTaskRequest.CategoryId is not null)
+            if (putTaskRequest.CategoryId is not null)
             {
-                existedCategory = await _taskCategoriesService.GetAsync(updateTaskRequest.CategoryId.Value);
+                existedCategory = await _taskCategoriesService.GetAsync(putTaskRequest.CategoryId.Value);
 
                 if (existedCategory is null)
                 {
@@ -80,10 +80,10 @@ namespace Pomodoro.Api.Controllers
 
             var (updateTask, errors) = TaskModel.Create(
                 id,
-                updateTaskRequest.Name,
+                putTaskRequest.Name,
                 existedCategory,
-                updateTaskRequest.Status,
-                updateTaskRequest.PomodoroEstimation);
+                putTaskRequest.Status,
+                putTaskRequest.PomodoroEstimation);
 
             if (errors.Any() || updateTask is null)
             {
