@@ -56,14 +56,6 @@ namespace Pomodoro.Api.Controllers
             return Ok(createdTask.Result);
         }
 
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteTask([FromRoute]int taskId)
-        {
-            var deleteResult = await _tasksService.DeleteTaskAsync(taskId);
-
-            return Ok(deleteResult);
-        }
-
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateTask([FromRoute]int id, [FromBody]PutTaskRequest updateTaskRequest)
         {
@@ -97,6 +89,14 @@ namespace Pomodoro.Api.Controllers
             var updateResult = await _tasksService.UpdateTaskAsync(updateTask);
 
             return Ok(updateResult);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteTask([FromRoute] int id)
+        {
+            var deleteResult = await _tasksService.DeleteTaskAsync(id);
+
+            return Ok(deleteResult);
         }
     }
 }
