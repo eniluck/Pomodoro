@@ -4,7 +4,7 @@ namespace Pomodoro.Core
 {
     public interface ITaskCategoriesService
     {
-        Task<List<TaskCategory>> GetAllTaskCategoriesAsync();
+        Task<TaskCategory[]> GetAllTaskCategoriesAsync();
 
         Task<TaskCategory> AddCategoryAsync(TaskCategory categoryRequest);
 

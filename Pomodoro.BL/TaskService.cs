@@ -45,7 +45,7 @@ namespace Pomodoro.BL
             return await _taskRepository.RemoveAsync(taskId);
         }
 
-        public async Task<List<TaskModel>> GetAllTasksAsync()
+        public async Task<TaskModel[]> GetAllTasksAsync()
         {
             return await _taskRepository.GetAllAsync();
         }

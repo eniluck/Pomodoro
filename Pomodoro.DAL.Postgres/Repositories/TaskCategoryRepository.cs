@@ -17,13 +17,13 @@ namespace Pomodoro.DAL.Postgres.Repositories
             _pomodoroDbContext = pomodoroDbContext;
         }
 
-        public async Task<List<TaskCategory>> GetAllAsync()
+        public async Task<TaskCategory[]> GetAllAsync()
         {
             var taskCategories = await _pomodoroDbContext.TaskCategories
                 .AsNoTracking()
-                .ToListAsync();
+                .ToArrayAsync();
 
-            return _mapper.Map<List<TaskCategoryEntity>, List<TaskCategory>>(taskCategories);
+            return _mapper.Map<TaskCategoryEntity[], TaskCategory[]>(taskCategories);
         }
 
         public async Task<TaskCategory> GetAsync(int id)
