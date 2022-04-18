@@ -1,6 +1,6 @@
 ﻿namespace Pomodoro.Api.Contracts.Responses.Task
 {
-    public class TaskCategoryResponse
+    public class CategoryResponse
     {
         public int Id { get; set; }
 
