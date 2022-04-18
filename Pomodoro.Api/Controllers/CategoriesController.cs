@@ -37,9 +37,9 @@ namespace Pomodoro.Api.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(GetCategoryResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string[]), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateCategory(CreateCategoryRequest taskCategoryRequest)
+        public async Task<IActionResult> CreateCategory(CreateCategoryRequest createCategoryRequest)
         {
-            var (newCategory, errors) = TaskCategory.Create(taskCategoryRequest.Name);
+            var (newCategory, errors) = TaskCategory.Create(createCategoryRequest.Name);
             if (errors.Any() || newCategory is null)
             {
                 _logger.LogError("{errors}", errors);
@@ -54,9 +54,9 @@ namespace Pomodoro.Api.Controllers
         [HttpPut("{id:int}")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string[]), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateCategory([FromRoute]int id, [FromBody]PutCategoryRequest categoryRequest)
+        public async Task<IActionResult> UpdateCategory([FromRoute]int id, [FromBody]PutCategoryRequest putCategoryRequest)
         {
-            var (newCategory, errors) = TaskCategory.Create(id, categoryRequest.Name);
+            var (newCategory, errors) = TaskCategory.Create(id, putCategoryRequest.Name);
             if (errors.Any() || newCategory is null)
             {
                 _logger.LogError("{errors}", errors);
