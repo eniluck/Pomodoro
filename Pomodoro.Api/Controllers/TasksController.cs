@@ -16,7 +16,11 @@ namespace Pomodoro.Api.Controllers
         private readonly IMapper _mapper;
         private readonly ILogger<TasksController> _logger;
 
-        public TasksController(ILogger<TasksController> logger, IMapper mapper, ITasksService tasksService, ITaskCategoriesService taskCategoriesService)
+        public TasksController(
+            ILogger<TasksController> logger,
+            IMapper mapper,
+            ITasksService tasksService,
+            ITaskCategoriesService taskCategoriesService)
         {
             _tasksService = tasksService;
             _taskCategoriesService = taskCategoriesService;
