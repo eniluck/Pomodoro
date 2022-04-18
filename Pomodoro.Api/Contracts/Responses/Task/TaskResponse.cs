@@ -1,4 +1,6 @@
-﻿namespace Pomodoro.Api.Contracts.Responses.Task
+﻿using Pomodoro.Core.Models;
+
+namespace Pomodoro.Api.Contracts.Responses.Task
 {
     public class TaskResponse
     {
@@ -6,9 +8,9 @@
 
         public string? Name { get; set; }
 
-        public TaskCategoryResponse? Category { get; set; }
+        public CategoryResponse? Category { get; set; }
 
-        public TaskStatusResponse Status { get; set; }
+        public TaskStatusModel Status { get; set; }
 
         public int PomodoroEstimation { get; set; }
     }
