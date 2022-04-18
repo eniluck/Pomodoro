@@ -2,13 +2,13 @@
 
 namespace Pomodoro.Api.Contracts.Responses.Task
 {
-    public class TaskResponse
+    public class GetTaskResponse
     {
         public int Id { get; set; }
 
         public string? Name { get; set; }
 
-        public CategoryResponse? Category { get; set; }
+        public GetCategoryResponse? Category { get; set; }
 
         public TaskStatusModel Status { get; set; }
 
