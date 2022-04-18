@@ -1,4 +1,6 @@
-﻿namespace Pomodoro.DAL.Postgres.Entities
+﻿using Pomodoro.Core.Models;
+
+namespace Pomodoro.DAL.Postgres.Entities
 {
     public class TaskEntity
     {
@@ -8,7 +10,7 @@
 
         public TaskCategoryEntity? Category { get; set; }
 
-        public TaskStatusEntity Status { get; set; }
+        public TaskStatusModel Status { get; set; }
 
         public int PomodoroEstimation { get; set; }
     }

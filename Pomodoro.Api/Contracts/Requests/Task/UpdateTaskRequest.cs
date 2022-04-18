@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Pomodoro.Core.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace Pomodoro.Api.Contracts.Requests.Task
 {
@@ -11,7 +12,7 @@ namespace Pomodoro.Api.Contracts.Requests.Task
 
         public int? CategoryId { get; set; }
 
-        public TaskStatusRequest Status { get; set; }
+        public TaskStatusModel Status { get; set; }
 
         public int PomodoroEstimation { get; set; }
     }
