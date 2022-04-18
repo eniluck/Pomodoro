@@ -26,7 +26,7 @@ namespace Pomodoro.Api.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(List<GetCategoryResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GetCategoryResponse[]), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllCategories()
         {
             var catagories = await _taskCategoriesService.GetAllTaskCategoriesAsync();
@@ -36,6 +36,7 @@ namespace Pomodoro.Api.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(GetCategoryResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string[]), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateCategory(CreateCategoryRequest taskCategoryRequest)
         {
             var (newCategory, errors) = TaskCategory.Create(taskCategoryRequest.Name);
@@ -52,6 +53,7 @@ namespace Pomodoro.Api.Controllers
 
         [HttpPut("{id:int}")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string[]), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateCategory([FromRoute]int id, [FromBody]PutCategoryRequest categoryRequest)
         {
             var (newCategory, errors) = TaskCategory.Create(id, categoryRequest.Name);

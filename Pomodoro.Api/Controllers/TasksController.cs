@@ -29,6 +29,7 @@ namespace Pomodoro.Api.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(GetTaskResponse[]), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllTasks()
         {
             var tasks = await _tasksService.GetAllTasksAsync();
@@ -37,6 +38,8 @@ namespace Pomodoro.Api.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(TaskModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string[]), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateTask(CreateTaskRequest createTaskRequest)
         {
             var (newTask, errors) = TaskModel.Create(createTaskRequest.Name);
@@ -57,6 +60,8 @@ namespace Pomodoro.Api.Controllers
         }
 
         [HttpPut("{id:int}")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string[]), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateTask([FromRoute]int id, [FromBody]PutTaskRequest updateTaskRequest)
         {
             TaskCategory? existedCategory = null;
@@ -92,6 +97,7 @@ namespace Pomodoro.Api.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         public async Task<IActionResult> DeleteTask([FromRoute] int id)
         {
             var deleteResult = await _tasksService.DeleteTaskAsync(id);
