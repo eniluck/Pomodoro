@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
@@ -18,33 +19,13 @@ using Xunit;
 
 namespace Pomodoro.IntegrationTests
 {
-    public class TasksControllerTests
+    public class TasksControllerTests : IClassFixture<TestAppFactory>
     {
         private readonly HttpClient _client;
 
-        public TasksControllerTests()
+        public TasksControllerTests(TestAppFactory factory)
         {
-            var app = new WebApplicationFactory<Program>();
-            app.WithWebHostBuilder(builder =>
-            {
-                builder.ConfigureTestServices(services =>
-                {
-                    /*
-                    //servicies.AddScoped
-                    var descriptor = services.SingleOrDefault(
-                        d => d.ServiceType == typeof(DbContextOptions<PomodoroDbContext>));
-
-                    services.Remove(descriptor);
-
-                    services.AddDbContext<PomodoroDbContext>(options =>
-                        options.UseNpgsql(
-                            connectionString,
-                            x => x.MigrationsAssembly("Pomodoro.DAL.Postgres")));*/
-                });
-            })
-                ;
-
-            _client = app.CreateClient();
+            _client = factory.CreateClient();
         }
 
         [Fact]
