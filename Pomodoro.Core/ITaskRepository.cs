@@ -6,7 +6,7 @@ namespace Pomodoro.Core
     {
         Task<TaskModel> AddAsync(TaskModel task);
 
-        Task<List<TaskModel>> GetAllAsync();
+        Task<TaskModel[]> GetAllAsync();
 
         Task<TaskModel> GetAsync(int id);
 

@@ -33,7 +33,7 @@ namespace Pomodoro.Api.Controllers
         {
             var tasks = await _tasksService.GetAllTasksAsync();
 
-            return Ok(_mapper.Map<List<TaskModel>, List<GetTaskResponse>>(tasks));
+            return Ok(_mapper.Map<GetTaskResponse[]>(tasks));
         }
 
         [HttpPost]

@@ -31,7 +31,7 @@ namespace Pomodoro.Api.Controllers
         {
             var catagories = await _taskCategoriesService.GetAllTaskCategoriesAsync();
 
-            return Ok(_mapper.Map<List<TaskCategory>, List<GetCategoryResponse>>(catagories));
+            return Ok(_mapper.Map<TaskCategory[], GetCategoryResponse[]>(catagories));
         }
 
         [HttpPost]

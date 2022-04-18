@@ -8,7 +8,7 @@ namespace Pomodoro.Core
 
         Task<bool> DeleteTaskAsync(int taskId);
 
-        Task<List<TaskModel>> GetAllTasksAsync();
+        Task<TaskModel[]> GetAllTasksAsync();
 
         Task<bool> UpdateTaskAsync(TaskModel taskModel);
     }
