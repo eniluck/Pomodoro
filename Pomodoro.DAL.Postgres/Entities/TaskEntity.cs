@@ -1,4 +1,5 @@
 ﻿using Pomodoro.Core.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace Pomodoro.DAL.Postgres.Entities
 {
@@ -6,7 +7,8 @@ namespace Pomodoro.DAL.Postgres.Entities
     {
         public int Id { get; set; }
 
-        public string? Name { get; set; }
+        [Required]
+        public string Name { get; set; }
 
         public TaskCategoryEntity? Category { get; set; }
 
