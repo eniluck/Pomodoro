@@ -6,7 +6,7 @@ namespace Pomodoro.Core
     {
         Task<TaskCategory?> AddAsync(TaskCategory taskCategory);
 
-        Task<List<TaskCategory>> GetAllAsync();
+        Task<TaskCategory[]> GetAllAsync();
 
         Task<TaskCategory> GetAsync(int id);
 
