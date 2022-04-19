@@ -15,6 +15,7 @@ using Pomodoro.Api.Contracts.Requests.Task;
 using Pomodoro.BL;
 using Pomodoro.Core;
 using Pomodoro.DAL.Postgres;
+using Pomodoro.DAL.Postgres.Entities;
 using Xunit;
 
 namespace Pomodoro.IntegrationTests
@@ -32,6 +33,24 @@ namespace Pomodoro.IntegrationTests
                 });
 
             _client = factory.CreateClient();
+
+            var scopeFactory = factory.Services.GetService<IServiceScopeFactory>();
+            using (var scope = scopeFactory.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetService<PomodoroDbContext>();
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+
+                context.AddRange(
+                        new TaskEntity
+                        {
+                            Name = "some",
+                            PomodoroEstimation = 1,
+                            Status = Core.Models.TaskStatusModel.InList,
+                            Category = null,
+                        });
+                context.SaveChanges();
+            }
         }
 
         [Fact]
@@ -84,7 +103,7 @@ namespace Pomodoro.IntegrationTests
             var putTaskRequest = new PutTaskRequest()
             {
                 Name = "some",
-                CategoryId = 1,
+                CategoryId = null,
                 PomodoroEstimation = 1,
                 Status = Core.Models.TaskStatusModel.InList,
             };
