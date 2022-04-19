@@ -10,6 +10,6 @@ namespace Pomodoro.Core
 
         Task<TaskModel[]> GetAllTasksAsync();
 
-        Task<bool> UpdateTaskAsync(TaskModel taskModel);
+        Task<(bool Result, string[] Errors)> UpdateTaskAsync(TaskModel taskModel, int? categoryId);
     }
 }
