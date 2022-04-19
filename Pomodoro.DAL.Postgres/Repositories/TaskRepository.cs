@@ -55,7 +55,11 @@ namespace Pomodoro.DAL.Postgres.Repositories
         public async Task<bool> UpdateAsync(TaskModel task)
         {
             var taskEntity = _mapper.Map<TaskModel, TaskEntity>(task);
-            _pomodoroDbContext.Entry(taskEntity.Category).State = EntityState.Unchanged;
+            if (taskEntity.Category is not null)
+            {
+                _pomodoroDbContext.Entry(taskEntity.Category).State = EntityState.Unchanged;
+            }
+
             _pomodoroDbContext.Tasks.Update(taskEntity);
 
             var updatedEntitesCount = await _pomodoroDbContext.SaveChangesAsync();
