@@ -12,18 +12,15 @@ namespace Pomodoro.Api.Controllers
     public class TasksController : ControllerBase
     {
         private readonly ITasksService _tasksService;
-        private readonly ITaskCategoriesService _taskCategoriesService;
         private readonly IMapper _mapper;
         private readonly ILogger<TasksController> _logger;
 
         public TasksController(
             ILogger<TasksController> logger,
             IMapper mapper,
-            ITasksService tasksService,
-            ITaskCategoriesService taskCategoriesService)
+            ITasksService tasksService)
         {
             _tasksService = tasksService;
-            _taskCategoriesService = taskCategoriesService;
             _mapper = mapper;
             _logger = logger;
         }
@@ -64,24 +61,10 @@ namespace Pomodoro.Api.Controllers
         [ProducesResponseType(typeof(string[]), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateTask([FromRoute]int id, [FromBody]PutTaskRequest putTaskRequest)
         {
-            TaskCategory? existedCategory = null;
-
-            if (putTaskRequest.CategoryId is not null)
-            {
-                existedCategory = await _taskCategoriesService.GetAsync(putTaskRequest.CategoryId.Value);
-
-                if (existedCategory is null)
-                {
-                    var error = new string[] { "Не найдена категория по Id" };
-                    _logger.LogError("{errors}", error);
-                    return BadRequest(error);
-                }
-            }
-
             var (updateTask, errors) = TaskModel.Create(
                 id,
                 putTaskRequest.Name,
-                existedCategory,
+                null,
                 putTaskRequest.Status,
                 putTaskRequest.PomodoroEstimation);
 
@@ -91,9 +74,15 @@ namespace Pomodoro.Api.Controllers
                 return BadRequest(errors);
             }
 
-            var updateResult = await _tasksService.UpdateTaskAsync(updateTask);
+            var updateResult = await _tasksService.UpdateTaskAsync(updateTask, putTaskRequest.CategoryId);
 
-            return Ok(updateResult);
+            if (updateResult.Errors.Any())
+            {
+                _logger.LogError("{errors}", errors);
+                return BadRequest(updateResult.Errors);
+            }
+
+            return Ok(updateResult.Result);
         }
 
         [HttpDelete("{id:int}")]
