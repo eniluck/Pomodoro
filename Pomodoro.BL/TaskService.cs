@@ -50,9 +50,24 @@ namespace Pomodoro.BL
             return await _taskRepository.GetAllAsync();
         }
 
-        public async Task<bool> UpdateTaskAsync(TaskModel taskModel)
+        public async Task<(bool Result, string[] Errors)> UpdateTaskAsync(TaskModel taskModel, int? categoryId)
         {
-            return await _taskRepository.UpdateAsync(taskModel);
+            TaskCategory? existedCategory = null;
+
+            if (categoryId is not null)
+            {
+                existedCategory = await _taskCategoryRepository.GetAsync(categoryId.Value);
+
+                if (existedCategory is null)
+                {
+                    var error = new string[] { "Не найдена категория по Id" };
+                    return (false, error);
+                }
+            }
+
+            return (await _taskRepository.UpdateAsync(
+               taskModel with { Category = existedCategory }),
+               Array.Empty<string>());
         }
     }
 }
