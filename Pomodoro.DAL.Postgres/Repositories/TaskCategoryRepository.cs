@@ -55,9 +55,19 @@ namespace Pomodoro.DAL.Postgres.Repositories
 
         public async Task<bool> UpdateAsync(TaskCategory taskCategory)
         {
+            var taskCategoryExisted = await _pomodoroDbContext.TaskCategories
+                .AsNoTracking()
+                .Where(tc => tc.Id == taskCategory.Id)
+                .FirstOrDefaultAsync();
+
+            if (taskCategoryExisted is null)
+            {
+                return false;
+            }
+
             var taskCategoryEntity = _mapper.Map<TaskCategory, TaskCategoryEntity>(taskCategory);
 
-            _pomodoroDbContext.Update(taskCategoryEntity);
+            _pomodoroDbContext.TaskCategories.Update(taskCategoryEntity);
             var updatedEntitesCount = await _pomodoroDbContext.SaveChangesAsync();
             return updatedEntitesCount > 0;
         }

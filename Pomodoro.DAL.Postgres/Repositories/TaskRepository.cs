@@ -54,6 +54,16 @@ namespace Pomodoro.DAL.Postgres.Repositories
 
         public async Task<bool> UpdateAsync(TaskModel task)
         {
+            var taskExisted = await _pomodoroDbContext.Tasks
+                .AsNoTracking()
+                .Where(tc => tc.Id == task.Id)
+                .FirstOrDefaultAsync();
+
+            if (taskExisted is null)
+            {
+                return false;
+            }
+
             var taskEntity = _mapper.Map<TaskModel, TaskEntity>(task);
             if (taskEntity.Category is not null)
             {
