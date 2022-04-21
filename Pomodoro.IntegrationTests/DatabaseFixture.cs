@@ -31,6 +31,13 @@ namespace Pomodoro.IntegrationTests
                             PomodoroEstimation = 1,
                             Status = Core.Models.TaskStatusModel.InList,
                             Category = null,
+                        },
+                        new TaskEntity
+                        {
+                            Name = "some2",
+                            PomodoroEstimation = 1,
+                            Status = Core.Models.TaskStatusModel.InList,
+                            Category = null,
                         });
                 context.SaveChanges();
             }
