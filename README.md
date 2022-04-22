@@ -11,3 +11,6 @@ dotnet ef database update --project Pomodoro.DAL.Postgres --startup-project Pomo
 
 - удалить бд
 dotnet ef database drop --project Pomodoro.DAL.Postgres --startup-project Pomodoro.API --context PomodoroDbContext --verbose
+
+#Seq web интерфейс доступен по адресу:
+http://localhost:5340
