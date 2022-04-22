@@ -10,3 +10,11 @@ services:
       - '5432:5432'
     volumes: 
       - ./database:/var/lib/postgresql/data
+  seq:
+    image: datalust/seq:latest
+    restart: on-failure
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - 5341:5341
+      - 5340:80
