@@ -10,8 +10,8 @@ namespace Pomodoro.DAL.Postgres
 
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.LogTo(Console.WriteLine);
+        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            => optionsBuilder.LogTo(Console.WriteLine);*/
 
         public DbSet<TaskCategoryEntity> TaskCategories { get; set; }
 

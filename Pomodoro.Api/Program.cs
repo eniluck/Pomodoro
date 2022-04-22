@@ -4,11 +4,11 @@ using Pomodoro.BL;
 using Pomodoro.Core;
 using Pomodoro.DAL.Postgres;
 using Pomodoro.DAL.Postgres.Repositories;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -32,6 +32,15 @@ builder.Services.AddDbContext<PomodoroDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("PomodoroConnection"),
         x => x.MigrationsAssembly("Pomodoro.DAL.Postgres")));
+
+var logger = new LoggerConfiguration()
+  .ReadFrom.Configuration(builder.Configuration)
+  .Enrich.FromLogContext()
+  .CreateLogger();
+
+builder.Logging.ClearProviders();
+
+builder.Logging.AddSerilog(logger);
 
 var app = builder.Build();
 
