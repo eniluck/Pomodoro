@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Pomodoro.Api;
 using Pomodoro.BL;
 using Pomodoro.Core;
@@ -32,6 +34,24 @@ builder.Services.AddDbContext<PomodoroDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("PomodoroConnection"),
         x => x.MigrationsAssembly("Pomodoro.DAL.Postgres")));
+
+builder.Services.AddOpenTelemetryTracing(b=>
+{
+    // uses the default Jaeger settings
+    b.AddJaegerExporter();
+
+    // receive traces from our own custom sources
+    b.AddSource(TelemetryConstants.MyAppTraceSource);
+
+    // decorate our service name so we can find it when we look inside Jaeger
+    b.SetResourceBuilder(ResourceBuilder.CreateDefault()
+        .AddService("AspNetCore", "Pomodoro"));
+
+    // receive traces from built-in sources
+    b.AddHttpClientInstrumentation();
+    b.AddAspNetCoreInstrumentation();
+    b.AddSqlClientInstrumentation();
+});
 
 var logger = new LoggerConfiguration()
   .ReadFrom.Configuration(builder.Configuration)
