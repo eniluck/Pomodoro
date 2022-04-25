@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CD6CFB27-23B0-46E8-B54D-0A61A43EDC72}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		docker-compose.yml = docker-compose.yml
 		stylecop.json = stylecop.json
 	EndProjectSection
 EndProject
@@ -17,9 +18,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomodoro.BL", "Pomodoro.BL\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomodoro.DAL.Postgres", "Pomodoro.DAL.Postgres\Pomodoro.DAL.Postgres.csproj", "{87232D8D-9876-4296-9430-38FE0E27EDDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pomodoro.UnitTests", "Pomodoro.UnitTests\Pomodoro.UnitTests.csproj", "{01EA4AEC-1E2F-49B5-8A04-F259D711E360}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomodoro.UnitTests", "Pomodoro.UnitTests\Pomodoro.UnitTests.csproj", "{01EA4AEC-1E2F-49B5-8A04-F259D711E360}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pomodoro.IntegrationTests", "Pomodoro.IntegrationTests\Pomodoro.IntegrationTests.csproj", "{B7369451-C5C6-43D7-98EE-AFF3C27D7F62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomodoro.IntegrationTests", "Pomodoro.IntegrationTests\Pomodoro.IntegrationTests.csproj", "{B7369451-C5C6-43D7-98EE-AFF3C27D7F62}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
