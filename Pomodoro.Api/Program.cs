@@ -8,6 +8,7 @@ using Pomodoro.Core;
 using Pomodoro.DAL.Postgres;
 using Pomodoro.DAL.Postgres.Repositories;
 using Serilog;
+using Serilog.Formatting.Compact;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,39 +37,28 @@ builder.Services.AddDbContext<PomodoroDbContext>(options =>
         builder.Configuration.GetConnectionString("PomodoroConnection"),
         x => x.MigrationsAssembly("Pomodoro.DAL.Postgres")));
 
-builder.Services.AddOpenTelemetryTracing(b =>
-{
-    // uses the default Jaeger settings
-    b.AddJaegerExporter();
-    b.AddConsoleExporter();
-
-    b.SetSampler(new AlwaysOnSampler());
-
-    // receive traces from our own custom sources
-    b.AddSource(TelemetryConstants.MyAppTraceSource);
-
-    // decorate our service name so we can find it when we look inside Jaeger
-    b.SetResourceBuilder(ResourceBuilder.CreateDefault()
-        .AddService("AspNetCore", "Pomodoro"));
-
-    // receive traces from built-in sources
-    b.AddHttpClientInstrumentation();
-    b.AddAspNetCoreInstrumentation();
-    b.AddSqlClientInstrumentation();
-    b.AddEntityFrameworkCoreInstrumentation(o => o.SetDbStatementForText = true);
-    b.AddNpgsql();
-});
-
 var logger = new LoggerConfiguration()
-  .ReadFrom.Configuration(builder.Configuration)
-  // add IServiceProvider
-  .ReadFrom.Services()
-  .Enrich.FromLogContext()
-  .CreateLogger();
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
 
 builder.Logging.ClearProviders();
 
 builder.Logging.AddSerilog(logger);
+
+builder.Services.AddOpenTelemetryTracing(b =>
+{
+    b
+        .SetResourceBuilder(
+            ResourceBuilder.CreateDefault()
+                .AddService(serviceName: "Some", serviceVersion: "1.0.0"))
+        .AddSource("Some")
+        .AddHttpClientInstrumentation()
+        .AddAspNetCoreInstrumentation()
+        .AddEntityFrameworkCoreInstrumentation(o => o.SetDbStatementForText = true)
+        .AddNpgsql()
+        .AddJaegerExporter();
+});
 
 var app = builder.Build();
 
