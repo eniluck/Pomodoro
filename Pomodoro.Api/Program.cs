@@ -51,8 +51,8 @@ builder.Services.AddOpenTelemetryTracing(b =>
     b
         .SetResourceBuilder(
             ResourceBuilder.CreateDefault()
-                .AddService(serviceName: "Some", serviceVersion: "1.0.0"))
-        .AddSource("Some")
+                .AddService(serviceName: "Pomodoro.Api", serviceVersion: "1.0.0"))
+        .AddSource("Pomodoro.Api")
         .AddHttpClientInstrumentation()
         .AddAspNetCoreInstrumentation()
         .AddEntityFrameworkCoreInstrumentation(o => o.SetDbStatementForText = true)
