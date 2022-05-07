@@ -35,6 +35,7 @@ namespace Pomodoro.Api.Controllers
         }
 
         [HttpPost]
+        [Consumes("application/json")]
         [ProducesResponseType(typeof(GetCategoryResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string[]), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateCategory(CreateCategoryRequest createCategoryRequest)
@@ -52,6 +53,7 @@ namespace Pomodoro.Api.Controllers
         }
 
         [HttpPut("{id:int}")]
+        [Consumes("application/json")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string[]), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateCategory([FromRoute]int id, [FromBody]PutCategoryRequest putCategoryRequest)
