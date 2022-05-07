@@ -14,3 +14,6 @@ dotnet ef database drop --project Pomodoro.DAL.Postgres --startup-project Pomodo
 
 #Seq web интерфейс доступен по адресу:
 http://localhost:5340
+
+#Jaeger web ui
+http://localhost:16686
