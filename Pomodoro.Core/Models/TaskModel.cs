@@ -2,7 +2,7 @@
 {
     public record TaskModel
     {
-        private TaskModel(int id, string name, TaskCategory? category, TaskStatusModel status, int pomodoroEstimation)
+        private TaskModel(int id, string name, TaskCategory? category, TaskStatusModel status, int? pomodoroEstimation)
         {
             Id = id;
             Name = name;
@@ -21,14 +21,14 @@
 
         public TaskStatusModel Status { get; }
 
-        public int PomodoroEstimation { get; }
+        public int? PomodoroEstimation { get; }
 
         public static (TaskModel? Result, string[] Errors) Create(string name)
         {
             return Create(0, name, null, TaskStatusModel.InList, 1);
         }
 
-        public static (TaskModel? Result, string[] Errors) Create(int id, string name, TaskCategory? taskCategory, TaskStatusModel taskStatus, int pomodoroEstimation)
+        public static (TaskModel? Result, string[] Errors) Create(int id, string name, TaskCategory? taskCategory, TaskStatusModel taskStatus, int? pomodoroEstimation)
         {
             var errors = new List<string>();
 
@@ -47,7 +47,7 @@
                 errors.Add($"{nameof(taskStatus)} must be defined in enum.");
             }
 
-            if (pomodoroEstimation < 0)
+            if (pomodoroEstimation.HasValue && pomodoroEstimation < 0)
             {
                 errors.Add($"{nameof(pomodoroEstimation)} must be positive.");
             }
