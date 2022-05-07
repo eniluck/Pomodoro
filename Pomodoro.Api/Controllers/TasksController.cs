@@ -35,6 +35,7 @@ namespace Pomodoro.Api.Controllers
         }
 
         [HttpPost]
+        [Consumes("application/json")]
         [ProducesResponseType(typeof(TaskModel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string[]), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateTask(CreateTaskRequest createTaskRequest)
@@ -57,6 +58,7 @@ namespace Pomodoro.Api.Controllers
         }
 
         [HttpPut("{id:int}")]
+        [Consumes("application/json")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string[]), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateTask([FromRoute]int id, [FromBody]PutTaskRequest putTaskRequest)
