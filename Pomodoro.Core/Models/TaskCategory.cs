@@ -10,7 +10,7 @@
 
         public int Id { get; }
 
-        public string? Name { get; }
+        public string Name { get; }
 
         public static (TaskCategory? Result, string[] Errors) Create(string name)
         {
