@@ -1,0 +1,22 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Pomodoro.DAL.Postgres.Entities;
+
+namespace Pomodoro.DAL.Postgres.Configurations;
+
+public class TaskCategoryConfiguration : IEntityTypeConfiguration<TaskCategoryEntity>
+{
+    public void Configure(EntityTypeBuilder<TaskCategoryEntity> builder)
+    {
+        builder.ToTable("TaskCategory");
+
+        builder.HasKey(b => b.Id);
+
+        builder.Property(b => b.Id)
+            .ValueGeneratedOnAdd();
+
+        builder.Property(b => b.Name)
+            .IsRequired()
+            .HasMaxLength(100);
+    }
+}
