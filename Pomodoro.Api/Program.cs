@@ -32,9 +32,14 @@ builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfle), typeof(MappingDBProfile));
 
+var connectionStringBuilder = new NpgsqlConnectionStringBuilder(
+    builder.Configuration.GetConnectionString("PomodoroConnection"));
+
+connectionStringBuilder.Password = builder.Configuration["Password"];
+
 builder.Services.AddDbContext<PomodoroDbContext>(options =>
     options.UseNpgsql(
-        builder.Configuration.GetConnectionString("PomodoroConnection"),
+        connectionStringBuilder.ConnectionString,
         x => x.MigrationsAssembly("Pomodoro.DAL.Postgres")));
 
 var logger = new LoggerConfiguration()
