@@ -68,7 +68,7 @@ namespace Pomodoro.IntegrationTests
         {
             var id = 1;
 
-            var putTaskRequest = new PutTaskRequest()
+            var putTaskRequest = new UpdateTaskRequest()
             {
                 Name = "some",
                 CategoryId = null,
@@ -90,7 +90,7 @@ namespace Pomodoro.IntegrationTests
         {
             var id = 1;
 
-            var putTaskRequest = new PutTaskRequest()
+            var putTaskRequest = new UpdateTaskRequest()
             {
                 Name = name,
                 CategoryId = null,

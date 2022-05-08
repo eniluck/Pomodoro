@@ -2,7 +2,7 @@
 
 namespace Pomodoro.Api.Contracts.Requests.Task
 {
-    public class PutCategoryRequest
+    public class UpdateCategoryRequest
     {
         [Required]
         [MaxLength(100)]
