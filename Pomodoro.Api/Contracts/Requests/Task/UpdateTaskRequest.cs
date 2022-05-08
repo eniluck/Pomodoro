@@ -3,7 +3,7 @@ using Pomodoro.Core.Models;
 
 namespace Pomodoro.Api.Contracts.Requests.Task
 {
-    public class PutTaskRequest
+    public class UpdateTaskRequest
     {
         [Required]
         [MaxLength(1024)]
