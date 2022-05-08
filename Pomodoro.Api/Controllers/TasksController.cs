@@ -61,14 +61,14 @@ namespace Pomodoro.Api.Controllers
         [Consumes("application/json")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string[]), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateTask([FromRoute]int id, [FromBody]PutTaskRequest putTaskRequest)
+        public async Task<IActionResult> UpdateTask([FromRoute]int taskId, [FromBody]UpdateTaskRequest updateTaskRequest)
         {
             var (updateTask, errors) = TaskModel.Create(
-                id,
-                putTaskRequest.Name,
+                taskId,
+                updateTaskRequest.Name,
                 null,
-                putTaskRequest.Status,
-                putTaskRequest.PomodoroEstimation);
+                updateTaskRequest.Status,
+                updateTaskRequest.PomodoroEstimation);
 
             if (errors.Any() || updateTask is null)
             {
@@ -76,7 +76,7 @@ namespace Pomodoro.Api.Controllers
                 return BadRequest(errors);
             }
 
-            var updateResult = await _tasksService.UpdateTaskAsync(updateTask, putTaskRequest.CategoryId);
+            var updateResult = await _tasksService.UpdateTaskAsync(updateTask, updateTaskRequest.CategoryId);
 
             if (updateResult.Errors.Any())
             {
@@ -89,9 +89,9 @@ namespace Pomodoro.Api.Controllers
 
         [HttpDelete("{id:int}")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-        public async Task<IActionResult> DeleteTask([FromRoute] int id)
+        public async Task<IActionResult> DeleteTask([FromRoute] int taskId)
         {
-            var deleteResult = await _tasksService.DeleteTaskAsync(id);
+            var deleteResult = await _tasksService.DeleteTaskAsync(taskId);
 
             return Ok(deleteResult);
         }

@@ -52,13 +52,15 @@ namespace Pomodoro.Api.Controllers
             return Ok(_mapper.Map<TaskCategory, GetCategoryResponse>(createdCategory));
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut("{categoryId:int}")]
         [Consumes("application/json")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string[]), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateCategory([FromRoute]int id, [FromBody]PutCategoryRequest putCategoryRequest)
+        public async Task<IActionResult> UpdateCategory(
+            [FromRoute]int categoryId,
+            [FromBody]UpdateCategoryRequest putCategoryRequest)
         {
-            var (newCategory, errors) = TaskCategory.Create(id, putCategoryRequest.Name);
+            var (newCategory, errors) = TaskCategory.Create(categoryId, putCategoryRequest.Name);
             if (errors.Any() || newCategory is null)
             {
                 _logger.LogError("{errors}", errors);
@@ -70,11 +72,11 @@ namespace Pomodoro.Api.Controllers
             return Ok(updateResult);
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{categoryId:int}")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-        public async Task<IActionResult> DeleteCategory([FromRoute]int id)
+        public async Task<IActionResult> DeleteCategory([FromRoute]int categoryId)
         {
-            var deleteResult = await _taskCategoriesService.DeleteCategory(id);
+            var deleteResult = await _taskCategoriesService.DeleteCategory(categoryId);
 
             return Ok(deleteResult);
         }
