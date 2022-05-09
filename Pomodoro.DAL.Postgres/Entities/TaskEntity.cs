@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Pomodoro.Core.Models;
+﻿using Pomodoro.Core.Models;
 
 namespace Pomodoro.DAL.Postgres.Entities
 {

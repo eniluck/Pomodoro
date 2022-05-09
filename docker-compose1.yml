@@ -1,14 +1,6 @@
-version: '3.4'
-
+version: '3.1'
 services:
-  pomodoro.api:
-    container_name: pomodoro.api
-    image: ${DOCKER_REGISTRY-}pomodoroapi
-    build:
-      context: .
-      dockerfile: Pomodoro.Api/Dockerfile
   db:
-    container_name: db
     image: postgres
     restart: always
     environment:
@@ -19,7 +11,6 @@ services:
     volumes: 
       - ./database:/var/lib/postgresql/data
   seq:
-    container_name: seq
     image: datalust/seq:latest
     restart: on-failure
     environment:
@@ -28,7 +19,6 @@ services:
       - 5341:5341
       - 5340:80
   jaeger:
-    container_name: jaeger
     image: jaegertracing/all-in-one
     restart: on-failure
     ports:
@@ -38,4 +28,4 @@ services:
       - 6832:6832/udp
       - 9411:9411
       - 14268:14268
-      - 16686:16686
+      - 16686:16686      
