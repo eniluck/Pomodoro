@@ -8,7 +8,6 @@ using Pomodoro.Core;
 using Pomodoro.DAL.Postgres;
 using Pomodoro.DAL.Postgres.Repositories;
 using Serilog;
-using Serilog.Formatting.Compact;
 
 var builder = WebApplication.CreateBuilder(args);
 

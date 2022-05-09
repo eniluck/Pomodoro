@@ -1,32 +1,22 @@
-using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Pomodoro.Api.Contracts.Requests.Task;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Pomodoro.IntegrationTests
 {
-    public class TasksControllerTests : IClassFixture<DatabaseFixture>
+    public class TasksControllerTests : BaseControllerTests
     {
-        private readonly HttpClient _client;
-
-        public TasksControllerTests()
+        public TasksControllerTests(ITestOutputHelper outputHelper)
+            : base(outputHelper)
         {
-            var factory = new WebApplicationFactory<Program>()
-                .WithWebHostBuilder(x =>
-                {
-                    x.UseEnvironment("Tests");
-                });
-
-            _client = factory.CreateClient();
         }
 
         [Fact]
         public async Task GetTaskTest()
         {
-            var response = await _client.GetAsync("api/tasks");
+            var response = await Client.GetAsync("api/tasks");
 
             response.EnsureSuccessStatusCode();
         }
@@ -40,7 +30,7 @@ namespace Pomodoro.IntegrationTests
                 CategoryId = null,
             };
 
-            var response = await _client.PostAsJsonAsync("api/tasks", newTask);
+            var response = await Client.PostAsJsonAsync("api/tasks", newTask);
 
             response.EnsureSuccessStatusCode();
         }
@@ -58,7 +48,7 @@ namespace Pomodoro.IntegrationTests
                 CategoryId = null,
             };
 
-            var response = await _client.PostAsJsonAsync("api/tasks", newTask);
+            var response = await Client.PostAsJsonAsync("api/tasks", newTask);
 
             Assert.Equal(System.Net.HttpStatusCode.BadRequest, response.StatusCode);
         }
@@ -76,7 +66,7 @@ namespace Pomodoro.IntegrationTests
                 Status = Core.Models.TaskStatusModel.InList,
             };
 
-            var response = await _client.PutAsJsonAsync($"api/tasks/{id}", putTaskRequest);
+            var response = await Client.PutAsJsonAsync($"api/tasks/{id}", putTaskRequest);
 
             response.EnsureSuccessStatusCode();
         }
@@ -98,7 +88,7 @@ namespace Pomodoro.IntegrationTests
                 Status = Core.Models.TaskStatusModel.InList,
             };
 
-            var response = await _client.PutAsJsonAsync($"api/tasks/{id}", putTaskRequest);
+            var response = await Client.PutAsJsonAsync($"api/tasks/{id}", putTaskRequest);
 
             Assert.Equal(System.Net.HttpStatusCode.BadRequest, response.StatusCode);
         }
@@ -107,7 +97,7 @@ namespace Pomodoro.IntegrationTests
         public async Task DeleteTask_ShouldReturnOK()
         {
             int id = 2;
-            var response = await _client.DeleteAsync($"api/tasks/{id}");
+            var response = await Client.DeleteAsync($"api/tasks/{id}");
 
             response.EnsureSuccessStatusCode();
             var resultBody = await response.Content.ReadAsStringAsync();
@@ -118,7 +108,7 @@ namespace Pomodoro.IntegrationTests
         public async Task DeleteTask_ShouldReturnFalse()
         {
             int id = 3;
-            var response = await _client.DeleteAsync($"api/tasks/{id}");
+            var response = await Client.DeleteAsync($"api/tasks/{id}");
             var resultBody = await response.Content.ReadAsStringAsync();
             response.EnsureSuccessStatusCode();
             Assert.Equal("false", resultBody);
