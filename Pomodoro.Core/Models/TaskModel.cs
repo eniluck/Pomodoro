@@ -2,22 +2,19 @@
 {
     public record TaskModel
     {
-        private TaskModel(int id, string name, TaskCategory? category, TaskStatusModel status, int? pomodoroEstimation)
+        private TaskModel(string name, TaskCategory? category, TaskStatusModel status, int? pomodoroEstimation)
         {
-            Id = id;
             Name = name;
             Category = category;
             Status = status;
             PomodoroEstimation = pomodoroEstimation;
         }
 
-        public int Id { get; }
+        public int Id { get; init; }
 
         public string Name { get; }
 
         public TaskCategory? Category { get; init; }
-
-        //public void AddCategory(TaskCategory? taskCategory) { Category = taskCategory; }
 
         public TaskStatusModel Status { get; }
 
@@ -25,17 +22,12 @@
 
         public static (TaskModel? Result, string[] Errors) Create(string name)
         {
-            return Create(0, name, null, TaskStatusModel.InList, 1);
+            return Create(name, null, TaskStatusModel.InList, 1);
         }
 
-        public static (TaskModel? Result, string[] Errors) Create(int id, string name, TaskCategory? taskCategory, TaskStatusModel taskStatus, int? pomodoroEstimation)
+        public static (TaskModel? Result, string[] Errors) Create(string name, TaskCategory? taskCategory, TaskStatusModel taskStatus, int? pomodoroEstimation)
         {
             var errors = new List<string>();
-
-            if (id < 0)
-            {
-                errors.Add($"{nameof(id)} must be positive.");
-            }
 
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -57,7 +49,7 @@
                 return (null, errors.ToArray());
             }
 
-            var result = new TaskModel(id, name, taskCategory, taskStatus, pomodoroEstimation);
+            var result = new TaskModel(name, taskCategory, taskStatus, pomodoroEstimation);
             return (result, Array.Empty<string>());
         }
     }

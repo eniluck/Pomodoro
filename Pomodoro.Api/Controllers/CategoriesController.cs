@@ -60,14 +60,14 @@ namespace Pomodoro.Api.Controllers
             [FromRoute]int categoryId,
             [FromBody]UpdateCategoryRequest putCategoryRequest)
         {
-            var (newCategory, errors) = TaskCategory.Create(categoryId, putCategoryRequest.Name);
+            var (newCategory, errors) = TaskCategory.Create(putCategoryRequest.Name);
             if (errors.Any() || newCategory is null)
             {
                 _logger.LogError("{errors}", errors);
                 return BadRequest(errors);
-            }
+            };
 
-            var updateResult = await _taskCategoriesService.UpdateCategory(newCategory);
+            var updateResult = await _taskCategoriesService.UpdateCategory(newCategory with { Id = categoryId });
 
             return Ok(updateResult);
         }

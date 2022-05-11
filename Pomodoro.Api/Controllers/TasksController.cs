@@ -57,14 +57,13 @@ namespace Pomodoro.Api.Controllers
             return Ok(createdTask.Result);
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut("{taskId:int}")]
         [Consumes("application/json")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string[]), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateTask([FromRoute]int taskId, [FromBody]UpdateTaskRequest updateTaskRequest)
         {
             var (updateTask, errors) = TaskModel.Create(
-                taskId,
                 updateTaskRequest.Name,
                 null,
                 updateTaskRequest.Status,
@@ -76,7 +75,7 @@ namespace Pomodoro.Api.Controllers
                 return BadRequest(errors);
             }
 
-            var updateResult = await _tasksService.UpdateTaskAsync(updateTask, updateTaskRequest.CategoryId);
+            var updateResult = await _tasksService.UpdateTaskAsync(updateTask with { Id = taskId}, updateTaskRequest.CategoryId);
 
             if (updateResult.Errors.Any())
             {

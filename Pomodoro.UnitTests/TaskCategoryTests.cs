@@ -13,7 +13,7 @@ namespace Pomodoro.UnitTests
             var fixture = new Fixture();
 
             // act
-            var (newTaskCategory, errors) = TaskCategory.Create(fixture.Create<int>(), fixture.Create<string>());
+            var (newTaskCategory, errors) = TaskCategory.Create(fixture.Create<string>());
 
             // assert
             Assert.NotNull(newTaskCategory);
@@ -29,8 +29,8 @@ namespace Pomodoro.UnitTests
             var int1 = fixture.Create<int>();
 
             // act
-            var (newTaskCategory1, _) = TaskCategory.Create(int1, name1);
-            var (newTaskCategory2, _) = TaskCategory.Create(int1, name1);
+            var (newTaskCategory1, _) = TaskCategory.Create(name1);
+            var (newTaskCategory2, _) = TaskCategory.Create(name1);
 
             // assert
             Assert.True(newTaskCategory1 == newTaskCategory2);
@@ -47,8 +47,8 @@ namespace Pomodoro.UnitTests
             var int2 = fixture.Create<int>();
 
             // act
-            var (newTaskCategory1, _) = TaskCategory.Create(int1, name1);
-            var (newTaskCategory2, _) = TaskCategory.Create(int2, name2);
+            var (newTaskCategory1, _) = TaskCategory.Create(name1);
+            var (newTaskCategory2, _) = TaskCategory.Create(name2);
 
             // assert
             Assert.False(newTaskCategory1 == newTaskCategory2);
