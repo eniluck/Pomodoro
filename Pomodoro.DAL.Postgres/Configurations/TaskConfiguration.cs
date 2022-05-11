@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Pomodoro.Core.Models;
 using Pomodoro.DAL.Postgres.Entities;
 
 namespace Pomodoro.DAL.Postgres.Configurations;
@@ -23,7 +24,7 @@ public class TaskConfiguration : IEntityTypeConfiguration<TaskEntity>
 
         builder.Property(b => b.Name)
             .IsRequired()
-            .HasMaxLength(1024);
+            .HasMaxLength(TaskModel.MAX_NAME_LENGTH);
 
         builder.Property(b => b.Status)
             .IsRequired();

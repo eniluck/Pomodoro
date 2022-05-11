@@ -2,6 +2,8 @@
 {
     public record TaskCategory
     {
+        public const int MAX_NAME_LENGTH = 100;
+
         public TaskCategory(string name)
         {
             Name = name;
@@ -18,6 +20,11 @@
             if (string.IsNullOrWhiteSpace(name))
             {
                 errors.Add($"{nameof(Name)} cannot be null or whitespace.");
+            }
+
+            if (name.Length > MAX_NAME_LENGTH)
+            {
+                errors.Add($"Maximum string length of {nameof(Name)} equals {MAX_NAME_LENGTH}.");
             }
 
             if (errors.Count > 0)

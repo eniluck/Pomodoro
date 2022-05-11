@@ -2,6 +2,8 @@
 {
     public record TaskModel
     {
+        public const int MAX_NAME_LENGTH = 1024;
+
         private TaskModel(string name, TaskCategory? category, TaskStatusModel status, int? pomodoroEstimation)
         {
             Name = name;
@@ -31,7 +33,12 @@
 
             if (string.IsNullOrWhiteSpace(name))
             {
-                errors.Add($"{nameof(name)} cannot be null or whitespace." );
+                errors.Add($"{nameof(Name)} cannot be null or whitespace." );
+            }
+
+            if (name.Length > MAX_NAME_LENGTH)
+            {
+                errors.Add($"Maximum string length of {nameof(Name)} equals {MAX_NAME_LENGTH}.");
             }
 
             if (!Enum.IsDefined(typeof(TaskStatusModel), taskStatus))
