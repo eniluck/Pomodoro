@@ -1,6 +1,10 @@
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using AutoFixture;
+using Microsoft.Extensions.DependencyInjection;
 using Pomodoro.Api.Contracts.Requests.Task;
+using Pomodoro.DAL.Postgres;
+using Pomodoro.DAL.Postgres.Entities;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -96,12 +100,31 @@ namespace Pomodoro.IntegrationTests
         [Fact]
         public async Task DeleteTask_ShouldReturnOK()
         {
-            int id = 2;
+            var fixture = new Fixture();
+            var id = await MakeTask(fixture);
+
             var response = await Client.DeleteAsync($"api/tasks/{id}");
 
             response.EnsureSuccessStatusCode();
             var resultBody = await response.Content.ReadAsStringAsync();
             Assert.Equal("true", resultBody);
+        }
+
+        private async Task<int> MakeTask(Fixture fixture)
+        {
+            using (var scope = Application.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<PomodoroDbContext>();
+                var taskEntity = fixture
+                    .Build<TaskEntity>()
+                    .Without(x => x.Id)
+                    .Without(x => x.CategoryId)
+                    .Create();
+
+                var entry = dbContext.Tasks.Add(taskEntity);
+                await dbContext.SaveChangesAsync();
+                return entry.Entity.Id;
+            }
         }
 
         [Fact]
