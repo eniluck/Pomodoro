@@ -87,10 +87,11 @@ namespace Pomodoro.Api.Controllers
             return Ok(updateResult.Result);
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{taskId:int}")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         public async Task<IActionResult> DeleteTask([FromRoute] int taskId)
         {
+            //TODO: Может возвращать Task ? и выполнение операции гарантирует что объект удалён?
             var deleteResult = await _tasksService.DeleteTaskAsync(taskId);
 
             return Ok(deleteResult);

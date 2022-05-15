@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Pomodoro.DAL.Postgres;
 using Xunit.Abstractions;
 
 namespace Pomodoro.IntegrationTests
@@ -10,21 +12,27 @@ namespace Pomodoro.IntegrationTests
     {
         public BaseControllerTests(ITestOutputHelper outputHelper)
         {
-            var factory = new WebApplicationFactory<Program>()
+            var configurationBuilder = new ConfigurationBuilder();
+            configurationBuilder.AddUserSecrets<LoggingHandler>();
+            var configuration = configurationBuilder.Build();
+
+            var connectionString = configuration.GetConnectionString(nameof(PomodoroDbContext));
+
+            Application = new WebApplicationFactory<Program>()
                 .WithWebHostBuilder(builder =>
                 {
-                    var configurationBuilder = new ConfigurationBuilder();
-                    configurationBuilder.AddUserSecrets<LoggingHandler>();
-                    builder.UseConfiguration(configurationBuilder.Build());
+                    builder.UseConfiguration(configuration);
 
                     // TODO: ДОбавить AppSettings
                     //builder.ConfigureAppConfiguration(b => b.AddConfiguration(configurationBuilder.Build()));
                     //builder.UseConfiguration();
                 });
 
-            Client = factory.CreateDefaultClient(new LoggingHandler(outputHelper));
+            //var dbContenct = factory.Server.Services.GetRequiredService<IConfiguration>()
+            Client = Application.CreateDefaultClient(new LoggingHandler(outputHelper));
         }
 
+        protected WebApplicationFactory<Program> Application { get; }
         protected HttpClient Client { get; }
     }
 }
