@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Net.Mime;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Pomodoro.Api.Contracts.Requests.Task;
 using Pomodoro.Api.Contracts.Responses.Task;
@@ -9,6 +10,8 @@ namespace Pomodoro.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [Produces(MediaTypeNames.Application.Json)]
     public class CategoriesController : ControllerBase
     {
         private readonly ITaskCategoriesService _taskCategoriesService;
@@ -35,7 +38,6 @@ namespace Pomodoro.Api.Controllers
         }
 
         [HttpPost]
-        [Consumes("application/json")]
         [ProducesResponseType(typeof(GetCategoryResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string[]), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateCategory(CreateCategoryRequest createCategoryRequest)
@@ -53,7 +55,6 @@ namespace Pomodoro.Api.Controllers
         }
 
         [HttpPut("{categoryId:int}")]
-        [Consumes("application/json")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string[]), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateCategory(
@@ -65,7 +66,7 @@ namespace Pomodoro.Api.Controllers
             {
                 _logger.LogError("{errors}", errors);
                 return BadRequest(errors);
-            };
+            }
 
             var updateResult = await _taskCategoriesService.UpdateCategory(newCategory with { Id = categoryId });
 
