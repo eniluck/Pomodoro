@@ -6,7 +6,7 @@ namespace Pomodoro.Core
     {
         Task<(TaskModel? Result, string[] Errors)> CreateTaskAsync(TaskModel taskModel, int? categoryId);
 
-        Task<bool> DeleteTaskAsync(int taskId);
+        Task DeleteTaskAsync(int taskId);
 
         Task<TaskModel[]> GetAllTasksAsync();
 

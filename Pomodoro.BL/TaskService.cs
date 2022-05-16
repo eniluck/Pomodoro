@@ -40,9 +40,9 @@ namespace Pomodoro.BL
                 Array.Empty<string>());
         }
 
-        public async Task<bool> DeleteTaskAsync(int taskId)
+        public async Task DeleteTaskAsync(int taskId)
         {
-            return await _taskRepository.RemoveAsync(taskId);
+            await _taskRepository.RemoveAsync(taskId);
         }
 
         public async Task<TaskModel[]> GetAllTasksAsync()

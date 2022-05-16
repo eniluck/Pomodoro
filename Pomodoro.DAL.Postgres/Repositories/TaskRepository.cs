@@ -36,20 +36,23 @@ namespace Pomodoro.DAL.Postgres.Repositories
             return _mapper.Map<TaskEntity, TaskModel>(task);
         }
 
-        public async Task<bool> RemoveAsync(int id)
+        public async Task RemoveAsync(int id)
         {
             var task = _pomodoroDbContext.Tasks
                 .Where(t => t.Id == id)
                 .FirstOrDefault();
 
-            if (task != null)
+            if (task == null)
             {
-                _pomodoroDbContext.Tasks.Remove(task);
-                var removedEntitesCount = await _pomodoroDbContext.SaveChangesAsync();
-                return removedEntitesCount > 0;
+                throw new Exception($"Задача с id ={id} не найдена для удаления");
             }
 
-            return false;
+            _pomodoroDbContext.Tasks.Remove(task);
+            var removedEntitesCount = await _pomodoroDbContext.SaveChangesAsync();
+            if (removedEntitesCount == 0)
+            {
+                throw new Exception("Задача с id ={id} не удалена");
+            }
         }
 
         public async Task<bool> UpdateAsync(TaskModel task)

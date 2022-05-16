@@ -10,7 +10,7 @@ namespace Pomodoro.Core
 
         Task<TaskModel> GetAsync(int id);
 
-        Task<bool> RemoveAsync(int id);
+        Task RemoveAsync(int id);
 
         Task<bool> UpdateAsync(TaskModel task);
     }
