@@ -9,7 +9,7 @@ public class TaskCategoryConfiguration : IEntityTypeConfiguration<TaskCategoryEn
 {
     public void Configure(EntityTypeBuilder<TaskCategoryEntity> builder)
     {
-        builder.ToTable("TaskCategory");
+        builder.ToTable("TaskCategories");
 
         builder.HasKey(b => b.Id);
 
