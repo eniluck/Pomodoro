@@ -17,13 +17,13 @@ namespace Pomodoro.DAL.Postgres.Repositories
             _pomodoroDbContext = pomodoroDbContext;
         }
 
-        public async Task<List<TaskCategory>> GetAllAsync()
+        public async Task<TaskCategory[]> GetAllAsync()
         {
             var taskCategories = await _pomodoroDbContext.TaskCategories
                 .AsNoTracking()
-                .ToListAsync();
+                .ToArrayAsync();
 
-            return _mapper.Map<List<TaskCategory>>(taskCategories);
+            return _mapper.Map<TaskCategoryEntity[], TaskCategory[]>(taskCategories);
         }
 
         public async Task<TaskCategory> GetAsync(int id)
@@ -33,7 +33,7 @@ namespace Pomodoro.DAL.Postgres.Repositories
                 .Where(tc => tc.Id == id)
                 .FirstOrDefaultAsync();
 
-            return _mapper.Map<TaskCategory>(taskCategory);
+            return _mapper.Map<TaskCategoryEntity, TaskCategory>(taskCategory);
         }
 
         public async Task<bool> RemoveAsync(int id)
@@ -55,21 +55,31 @@ namespace Pomodoro.DAL.Postgres.Repositories
 
         public async Task<bool> UpdateAsync(TaskCategory taskCategory)
         {
-            var taskCategoryEntity = _mapper.Map<TaskCategoryEntity>(taskCategory);
+            var taskCategoryExisted = await _pomodoroDbContext.TaskCategories
+                .AsNoTracking()
+                .Where(tc => tc.Id == taskCategory.Id)
+                .FirstOrDefaultAsync();
 
-            _pomodoroDbContext.Update(taskCategoryEntity);
+            if (taskCategoryExisted is null)
+            {
+                return false;
+            }
+
+            var taskCategoryEntity = _mapper.Map<TaskCategory, TaskCategoryEntity>(taskCategory);
+
+            _pomodoroDbContext.TaskCategories.Update(taskCategoryEntity);
             var updatedEntitesCount = await _pomodoroDbContext.SaveChangesAsync();
             return updatedEntitesCount > 0;
         }
 
         public async Task<TaskCategory?> AddAsync(TaskCategory taskCategory)
         {
-            var taskCategoryEntity = _mapper.Map<TaskCategoryEntity>(taskCategory);
+            var taskCategoryEntity = _mapper.Map<TaskCategory, TaskCategoryEntity>(taskCategory);
             _pomodoroDbContext.Add(taskCategoryEntity);
             var addeddEntitesCount = await _pomodoroDbContext.SaveChangesAsync();
             if (addeddEntitesCount > 0)
             {
-                return _mapper.Map<TaskCategory>(taskCategoryEntity);
+                return _mapper.Map<TaskCategoryEntity, TaskCategory>(taskCategoryEntity);
             }
             else
             {

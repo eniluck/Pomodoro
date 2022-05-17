@@ -4,9 +4,12 @@ namespace Pomodoro.Core
 {
     public interface ITasksService
     {
-        List<TaskModel> GetAllTasks();
-        TaskModel CreateTask(TaskModel createTaskRequest);
-        bool UpdateTask(TaskModel updateTaskRequest);
-        bool DeleteTask(int taskId);
+        Task<(TaskModel? Result, string[] Errors)> CreateTaskAsync(TaskModel taskModel, int? categoryId);
+
+        Task<bool> DeleteTaskAsync(int taskId);
+
+        Task<TaskModel[]> GetAllTasksAsync();
+
+        Task<(bool Result, string[] Errors)> UpdateTaskAsync(TaskModel taskModel, int? categoryId);
     }
 }

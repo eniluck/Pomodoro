@@ -1,38 +1,46 @@
-﻿using AutoMapper;
+﻿using System.Net.Mime;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Pomodoro.Api.Contracts.Requests.Task;
-using Pomodoro.Api.Contracts.Responses;
+using Pomodoro.Api.Contracts.Responses.Task;
 using Pomodoro.Core;
 using Pomodoro.Core.Models;
-using System.Linq;
 
 namespace Pomodoro.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [Produces(MediaTypeNames.Application.Json)]
     public class TasksController : ControllerBase
     {
         private readonly ITasksService _tasksService;
         private readonly IMapper _mapper;
         private readonly ILogger<TasksController> _logger;
 
-        public TasksController(ILogger<TasksController> logger, IMapper mapper)//, ITasksService tasksService)
+        public TasksController(
+            ILogger<TasksController> logger,
+            IMapper mapper,
+            ITasksService tasksService)
         {
-           // _tasksService = tasksService;
+            _tasksService = tasksService;
             _mapper = mapper;
             _logger = logger;
         }
 
         [HttpGet]
-        public IActionResult GetAllTasks()
+        [ProducesResponseType(typeof(GetTaskResponse[]), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllTasks()
         {
-            var tasks = _tasksService.GetAllTasks();
+            var tasks = await _tasksService.GetAllTasksAsync();
 
-            return Ok(_mapper.Map<List<TaskResponse>>(tasks));
+            return Ok(_mapper.Map<GetTaskResponse[]>(tasks));
         }
 
         [HttpPost]
-        public IActionResult CreateTask(CreateTaskRequest createTaskRequest)
+        [ProducesResponseType(typeof(TaskModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string[]), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateTask(CreateTaskRequest createTaskRequest)
         {
             var (newTask, errors) = TaskModel.Create(createTaskRequest.Name);
             if (errors.Any() || newTask is null)
@@ -41,26 +49,51 @@ namespace Pomodoro.Api.Controllers
                 return BadRequest(errors);
             }
 
-            //var createdTask = _tasksService.CreateTask(newTask);
+            var createdTask = await _tasksService.CreateTaskAsync(newTask, createTaskRequest.CategoryId);
+            if (createdTask.Errors.Any() || createdTask.Result is null)
+            {
+                _logger.LogError("{errors}", errors);
+                return BadRequest(createdTask.Errors);
+            }
 
-            return Ok(newTask);
+            return Ok(createdTask.Result);
         }
 
-        [HttpDelete]
-        public IActionResult DeleteTask(int taskId)
+        [HttpPut("{taskId:int}")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string[]), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateTask([FromRoute]int taskId, [FromBody]UpdateTaskRequest updateTaskRequest)
         {
-            var deleteResult = _tasksService.DeleteTask(taskId);
+            var (updateTask, errors) = TaskModel.Create(
+                updateTaskRequest.Name,
+                null,
+                updateTaskRequest.Status,
+                updateTaskRequest.PomodoroEstimation);
+
+            if (errors.Any() || updateTask is null)
+            {
+                _logger.LogError("{errors}", errors);
+                return BadRequest(errors);
+            }
+
+            var updateResult = await _tasksService.UpdateTaskAsync(updateTask with { Id = taskId}, updateTaskRequest.CategoryId);
+
+            if (updateResult.Errors.Any())
+            {
+                _logger.LogError("{errors}", errors);
+                return BadRequest(updateResult.Errors);
+            }
+
+            return Ok(updateResult.Result);
+        }
+
+        [HttpDelete("{id:int}")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        public async Task<IActionResult> DeleteTask([FromRoute] int taskId)
+        {
+            var deleteResult = await _tasksService.DeleteTaskAsync(taskId);
 
             return Ok(deleteResult);
-        }
-
-        [HttpPut]
-        public IActionResult UpdateTask(UpdateTaskRequest updateTaskRequest)
-        {
-            var taskRequest = _mapper.Map<TaskModel>(updateTaskRequest);
-            var updateResult = _tasksService.UpdateTask(taskRequest);
-
-            return Ok(updateResult);
         }
     }
 }

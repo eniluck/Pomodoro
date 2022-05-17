@@ -32,11 +32,12 @@ namespace Pomodoro.DAL.Postgres.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("TaskCategories");
+                    b.ToTable("TaskCategories", (string)null);
                 });
 
             modelBuilder.Entity("Pomodoro.DAL.Postgres.Entities.TaskEntity", b =>
@@ -50,12 +51,13 @@ namespace Pomodoro.DAL.Postgres.Migrations
                     b.Property<int?>("CategoryId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Count")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(1024)
+                        .HasColumnType("character varying(1024)");
+
+                    b.Property<int?>("PomodoroEstimation")
+                        .HasColumnType("integer");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -64,14 +66,15 @@ namespace Pomodoro.DAL.Postgres.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Tasks", (string)null);
                 });
 
             modelBuilder.Entity("Pomodoro.DAL.Postgres.Entities.TaskEntity", b =>
                 {
-                    b.HasOne("Pomodoro.DAL.Postgres.Entities.TaskEntity", "Category")
+                    b.HasOne("Pomodoro.DAL.Postgres.Entities.TaskCategoryEntity", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .HasConstraintName("FK_Task_TaskCategories_CategoryId");
 
                     b.Navigation("Category");
                 });

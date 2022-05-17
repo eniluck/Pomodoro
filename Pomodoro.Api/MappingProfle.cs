@@ -9,9 +9,9 @@ namespace Pomodoro.Api
     {
         public MappingProfle()
         {
-            CreateMap<TaskCategory, TaskCategoryResponse>();
-            CreateMap<CreateTaskCategoryRequest, TaskCategory>();
-            CreateMap<TaskCategoryRequest, TaskCategory>();
+            CreateMap<TaskCategory, GetCategoryResponse>();
+            CreateMap<TaskModel, GetTaskResponse>();
+            CreateMap<GetTaskResponse, TaskModel>();
         }
     }
 }
