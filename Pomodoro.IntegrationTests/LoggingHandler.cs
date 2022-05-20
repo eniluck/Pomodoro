@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using Xunit.Abstractions;
 
 namespace Pomodoro.IntegrationTests
@@ -22,7 +24,14 @@ namespace Pomodoro.IntegrationTests
 
             var response = await base.SendAsync(request, cancellationToken);
 
-            await PrintJsonContent(response.Content);
+            try
+            {
+                await PrintJsonContent(response.Content);
+            }
+            catch (Exception ex)
+            {
+                _outputHelper.WriteLine(ex.ToString());
+            }
 
             return response;
         }
@@ -32,8 +41,10 @@ namespace Pomodoro.IntegrationTests
             if (content is not null)
             {
                 var requestJson = await content.ReadAsStringAsync();
-                var json = JToken.Parse(requestJson).ToString();
-                _outputHelper.WriteLine(json);
+
+                var jToken = JToken.Parse(requestJson);
+
+                _outputHelper.WriteLine(jToken.ToString());
             }
         }
 
