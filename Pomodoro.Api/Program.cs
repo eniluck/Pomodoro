@@ -31,37 +31,9 @@ builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfle), typeof(MappingDBProfile));
 
-var connectionStringBuilder = new NpgsqlConnectionStringBuilder(
-    builder.Configuration.GetConnectionString("PomodoroConnection"));
-
-connectionStringBuilder.Password = builder.Configuration["Password"];
-
 builder.Services.AddDbContext<PomodoroDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString(nameof(PomodoroDbContext))));
-
-var logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(builder.Configuration)
-    .Enrich.FromLogContext()
-    .CreateLogger();
-
-builder.Logging.ClearProviders();
-
-builder.Logging.AddSerilog(logger);
-
-builder.Services.AddOpenTelemetryTracing(b =>
-{
-    b
-        .SetResourceBuilder(
-            ResourceBuilder.CreateDefault()
-                .AddService(serviceName: "Pomodoro.Api", serviceVersion: "1.0.0"))
-        .AddSource("Pomodoro.Api")
-        .AddHttpClientInstrumentation()
-        .AddAspNetCoreInstrumentation()
-        .AddEntityFrameworkCoreInstrumentation(o => o.SetDbStatementForText = true)
-        .AddNpgsql()
-        .AddJaegerExporter();
-});
 
 var logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)

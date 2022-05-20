@@ -47,14 +47,12 @@ namespace Pomodoro.DAL.Postgres.Repositories
                 throw new Exception($"Задача с id ={id} не найдена для удаления");
             }
 
-                _pomodoroDbContext.Tasks.Remove(task);
-                var removedEntitesCount = await _pomodoroDbContext.SaveChangesAsync();
+            _pomodoroDbContext.Tasks.Remove(task);
+            var removedEntitesCount = await _pomodoroDbContext.SaveChangesAsync();
             if (removedEntitesCount == 0)
             {
                 throw new Exception("Задача с id ={id} не удалена");
             }
-
-            return false;
         }
 
         public async Task<bool> UpdateAsync(TaskModel task)

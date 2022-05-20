@@ -16,13 +16,7 @@ namespace Pomodoro.IntegrationTests
         public TasksControllerTests(ITestOutputHelper outputHelper)
             : base(outputHelper)
         {
-            var factory = new WebApplicationFactory<Program>()
-                .WithWebHostBuilder(x =>
-                {
-                    x.UseEnvironment("Tests");
-                });
 
-            _client = factory.CreateClient();
         }
 
         [Fact]

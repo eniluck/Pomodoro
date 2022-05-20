@@ -33,6 +33,7 @@ namespace Pomodoro.IntegrationTests
         }
 
         protected WebApplicationFactory<Program> Application { get; }
+
         protected HttpClient Client { get; }
     }
 }
