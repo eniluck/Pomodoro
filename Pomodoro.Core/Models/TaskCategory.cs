@@ -2,22 +2,18 @@
 {
     public record TaskCategory
     {
-        public TaskCategory(int id, string name)
+        public const int MAX_NAME_LENGTH = 100;
+
+        public TaskCategory(string name)
         {
-            Id = id;
             Name = name;
         }
 
-        public int Id { get; }
+        public int Id { get; init; }
 
         public string Name { get; }
 
         public static (TaskCategory? Result, string[] Errors) Create(string name)
-        {
-            return Create(0, name);
-        }
-
-        public static (TaskCategory? Result, string[] Errors) Create(int id, string name)
         {
             var errors = new List<string>();
 
@@ -26,9 +22,9 @@
                 errors.Add($"{nameof(Name)} cannot be null or whitespace.");
             }
 
-            if (id < 0)
+            if (name.Length > MAX_NAME_LENGTH)
             {
-                errors.Add($"{nameof(id)} must be positive.");
+                errors.Add($"Maximum string length of {nameof(Name)} equals {MAX_NAME_LENGTH}.");
             }
 
             if (errors.Count > 0)
@@ -36,7 +32,7 @@
                 return (null, errors.ToArray());
             }
 
-            var newTaskCategory = new TaskCategory(id, name);
+            var newTaskCategory = new TaskCategory(name);
             return (newTaskCategory, Array.Empty<string>());
         }
     }

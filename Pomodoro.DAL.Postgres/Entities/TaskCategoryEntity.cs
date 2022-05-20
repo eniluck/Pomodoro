@@ -1,4 +1,6 @@
-﻿namespace Pomodoro.DAL.Postgres.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Pomodoro.DAL.Postgres.Entities
 {
     public class TaskCategoryEntity
     {
