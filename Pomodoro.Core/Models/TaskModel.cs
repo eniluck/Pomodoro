@@ -20,7 +20,7 @@
 
         //public void AddCategory(TaskCategory? taskCategory) { Category = taskCategory; }
 
-        public TaskStatusModel Status { get; }
+        public TaskStatusModel Status { get; init }
 
         public int? PomodoroEstimation { get; }
 
@@ -60,6 +60,21 @@
 
             var result = new TaskModel(name, taskCategory, taskStatus, pomodoroEstimation);
             return (result, Array.Empty<string>());
+        }
+
+        public TaskModel Start(TaskModel existedTask)
+        {
+            switch (existedTask.Status)
+            {
+                case TaskStatusModel.InProgress:
+                    throw new Exception($"Задача с id = {existedTask.Id} уже выполняется");
+                case TaskStatusModel.Ready:
+                    throw new Exception($"Задача с id = {existedTask.Id} уже выполнена");
+                case TaskStatusModel.InList:
+                    return new TaskModel(existedTask) with { Status = TaskStatusModel.InProgress };
+                default:
+                    throw new Exception($"Неизвестный статус текущей задачи");
+            }
         }
     }
 }
