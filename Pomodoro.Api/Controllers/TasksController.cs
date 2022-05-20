@@ -87,13 +87,13 @@ namespace Pomodoro.Api.Controllers
             return Ok(updateResult.Result);
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{taskId:int}")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         public async Task<IActionResult> DeleteTask([FromRoute] int taskId)
         {
-            var deleteResult = await _tasksService.DeleteTaskAsync(taskId);
+            await _tasksService.DeleteTaskAsync(taskId);
 
-            return Ok(deleteResult);
+            return Ok();
         }
     }
 }

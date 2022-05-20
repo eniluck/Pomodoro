@@ -26,7 +26,6 @@ namespace Pomodoro.UnitTests
             // arrange
             var fixture = new Fixture();
             var name1 = fixture.Create<string>();
-            var int1 = fixture.Create<int>();
             var intEstimation1 = fixture.Create<int>();
 
 
@@ -45,8 +44,6 @@ namespace Pomodoro.UnitTests
             var fixture = new Fixture();
             var name1 = fixture.Create<string>();
             var name2 = fixture.Create<string>();
-            var int1 = fixture.Create<int>();
-            var int2 = fixture.Create<int>();
             var intEstimation1 = fixture.Create<int>();
             var intEstimation2 = fixture.Create<int>();
 
