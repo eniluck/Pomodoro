@@ -20,7 +20,7 @@
 
         //public void AddCategory(TaskCategory? taskCategory) { Category = taskCategory; }
 
-        public TaskStatusModel Status { get; init }
+        public TaskStatusModel Status { get; init; }
 
         public int? PomodoroEstimation { get; }
 
