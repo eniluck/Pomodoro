@@ -5,10 +5,16 @@ internal class ExceptionHandlingFilter : IExceptionFilter
 {
     public void OnException(ExceptionContext context)
     {
+        var message = context.Exception.Message;
+        if (context.Exception.InnerException != null)
+        {
+            message += $" Inner exception: {context.Exception.InnerException.Message}";
+        }
+
         var problemDetails = new ProblemDetails
         {
             Type = "https://example.com/unhandled",
-            Detail = context.Exception.Message,
+            Detail = message,
             Title = "Неизвестная ошибка",
             Status = 500,
         };

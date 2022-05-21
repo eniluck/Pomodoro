@@ -11,8 +11,8 @@ namespace Pomodoro.DAL.Postgres
             CreateMap<TaskCategoryEntity, TaskCategory>();
             CreateMap<TaskCategory, TaskCategoryEntity>();
 
-            CreateMap<TaskEntity, TaskModel>();
-            CreateMap<TaskModel, TaskEntity>();
+            CreateMap<TaskEntity, TaskModel>().ReverseMap();
+            CreateMap<TaskHistoryEntity, TaskHistory>().ReverseMap();
         }
     }
 }

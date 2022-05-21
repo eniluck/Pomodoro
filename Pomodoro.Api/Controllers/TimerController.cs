@@ -25,7 +25,7 @@ namespace Pomodoro.Api.Controllers
             _logger = logger;
         }
 
-        [HttpGet("taskId:int")]
+        [HttpGet("{taskId:int}")]
         public async Task<IActionResult> Start(int taskId)
         {
             await _timerService.StartAsync(taskId);

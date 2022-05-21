@@ -2,15 +2,6 @@
 
 public class TaskHistoryEntity
 {
-    public TaskHistoryEntity(int id, int taskId, DateTime createDateTime, DateTime startDateTime, DateTime stopDateTime)
-    {
-        Id = id;
-        TaskId = taskId;
-        CreateDateTime = createDateTime;
-        StartDateTime = startDateTime;
-        StopDateTime = stopDateTime;
-    }
-
     /// <summary>
     /// Идентификатор.
     /// </summary>
