@@ -4,5 +4,5 @@ namespace Pomodoro.Core;
 
 public interface ITimerService
 {
-    public Task<Result> StartAsync(int taskId);
+    Task<Result> StartAsync(int taskId);
 }
