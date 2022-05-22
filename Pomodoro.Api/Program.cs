@@ -32,6 +32,10 @@ builder.Services.AddScoped<ITasksService, TaskService>();
 
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 
+builder.Services.AddScoped<ITimerService, TimerService>();
+
+builder.Services.AddScoped<ITaskHistoryRepository, TaskHistoryRepository>();
+
 builder.Services.AddAutoMapper(typeof(MappingProfle), typeof(MappingDBProfile));
 
 builder.Services.AddDbContext<PomodoroDbContext>(options =>

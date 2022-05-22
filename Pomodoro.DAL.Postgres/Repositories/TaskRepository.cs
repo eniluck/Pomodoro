@@ -67,11 +67,12 @@ namespace Pomodoro.DAL.Postgres.Repositories
                 return false;
             }
 
-            var taskEntity = _mapper.Map<TaskModel, TaskEntity>(task);
-            if (taskEntity.Category is not null)
+            var taskEntity = new TaskEntity()
             {
-                _pomodoroDbContext.Entry(taskEntity.Category).State = EntityState.Unchanged;
-            }
+                Id = task.Id,
+                Name = task.Name,
+                PomodoroEstimation = task.PomodoroEstimation,
+            };
 
             _pomodoroDbContext.Tasks.Update(taskEntity);
 

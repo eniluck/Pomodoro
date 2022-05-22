@@ -24,14 +24,7 @@ namespace Pomodoro.IntegrationTests
 
             var response = await base.SendAsync(request, cancellationToken);
 
-            try
-            {
-                await PrintJsonContent(response.Content);
-            }
-            catch (Exception ex)
-            {
-                _outputHelper.WriteLine(ex.ToString());
-            }
+            await PrintJsonContent(response.Content);
 
             return response;
         }
@@ -42,9 +35,15 @@ namespace Pomodoro.IntegrationTests
             {
                 var requestJson = await content.ReadAsStringAsync();
 
-                var jToken = JToken.Parse(requestJson);
-
-                _outputHelper.WriteLine(jToken.ToString());
+                try
+                {
+                    var jToken = JToken.Parse(requestJson);
+                    _outputHelper.WriteLine(jToken.ToString());
+                }
+                catch
+                {
+                    _outputHelper.WriteLine(requestJson);
+                }
             }
         }
 

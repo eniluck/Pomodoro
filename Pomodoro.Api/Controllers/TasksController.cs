@@ -1,5 +1,4 @@
-﻿using System.Net.Mime;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Pomodoro.Api.Contracts.Requests.Task;
 using Pomodoro.Api.Contracts.Responses.Task;
@@ -8,11 +7,7 @@ using Pomodoro.Core.Models;
 
 namespace Pomodoro.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    [Consumes(MediaTypeNames.Application.Json)]
-    [Produces(MediaTypeNames.Application.Json)]
-    public class TasksController : ControllerBase
+    public class TasksController : BaseController
     {
         private readonly ITasksService _tasksService;
         private readonly IMapper _mapper;

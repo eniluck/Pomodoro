@@ -14,12 +14,13 @@ namespace Pomodoro.DAL.Postgres
 
         public DbSet<TaskEntity> Tasks { get; set; }
 
+        public DbSet<TaskHistoryEntity> TaskHistories { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfiguration(new TaskCategoryConfiguration());
-            modelBuilder.ApplyConfiguration(new TaskConfiguration());
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(PomodoroDbContext).Assembly);
         }
     }
 }
