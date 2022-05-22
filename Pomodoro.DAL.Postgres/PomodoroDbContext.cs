@@ -20,9 +20,7 @@ namespace Pomodoro.DAL.Postgres
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfiguration(new TaskCategoryConfiguration());
-            modelBuilder.ApplyConfiguration(new TaskConfiguration());
-            modelBuilder.ApplyConfiguration(new TaskHistoryConfiguration());
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(PomodoroDbContext).Assembly);
         }
     }
 }
