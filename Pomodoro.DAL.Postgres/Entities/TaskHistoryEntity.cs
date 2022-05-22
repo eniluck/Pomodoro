@@ -18,17 +18,12 @@ public class TaskHistoryEntity
     public TaskEntity Task { get; set; }
 
     /// <summary>
-    /// Время добавления в историю.
-    /// </summary>
-    public DateTime CreateDateTime { get; set; }
-
-    /// <summary>
     /// Начало выполнения задачи.
     /// </summary>
-    public DateTime StartDateTime { get; set; }
+    public DateTime Start { get; set; }
 
     /// <summary>
     /// Окончание выполнения задачи.
     /// </summary>
-    public DateTime StopDateTime { get; set; }
+    public DateTime Stop { get; set; }
 }

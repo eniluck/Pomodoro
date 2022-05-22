@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using Pomodoro.Core;
 using Pomodoro.Core.Models;
@@ -19,29 +20,42 @@ public class TaskHistoryRepository : ITaskHistoryRepository
         _pomodoroDbContext = pomodoroDbContext;
     }
 
-    public async Task<TaskHistory?> AddAsync(TaskHistory taskHistory)
+    public async Task<Result> AddAsync(TaskHistory taskHistory)
     {
-        var taskHistoryEntity = _mapper.Map<TaskHistory, TaskHistoryEntity>(taskHistory);
+        var task = taskHistory.Task;
 
-        _pomodoroDbContext.ChangeTracker.Clear();
+        var existedTask = await _pomodoroDbContext.Tasks
+                .Include(x => x.Category)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(tc => tc.Id == task.Id);
 
-        if (taskHistoryEntity.Task is not null)
+        if (existedTask is null)
         {
-            //taskHistoryEntity.Task = null; // лучший вариант ? нет. т.к. существует проблема в том что отдавать сущность нужно с этими данными
-
-            _pomodoroDbContext.Tasks.Attach(taskHistoryEntity.Task); // ошибка
-
-            /*var taskExisted = await _pomodoroDbContext.Tasks // не нравится что ещё раз приходится обращаться к бд
-                .Where(tc => tc.Id == taskHistoryEntity.TaskId)
-                .FirstOrDefaultAsync();
-
-            taskHistoryEntity.Task = taskExisted; // и ещё подменять приходится. */
+            return Result.Failure($"Задача не найдена с id={task.Id}");
         }
+
+        var taskEntity = new TaskEntity()
+        {
+            Id = existedTask.Id,
+            Status = task.Status,
+            Name = existedTask.Name,
+            CategoryId = existedTask.Category?.Id,
+            PomodoroEstimation = existedTask.PomodoroEstimation,
+        };
+
+        _pomodoroDbContext.Tasks.Update(taskEntity);
+
+        var taskHistoryEntity = new TaskHistoryEntity()
+        {
+            TaskId = task.Id,
+            Start = taskHistory.StartDateTime,
+            Stop = taskHistory.StopDateTime,
+        };
 
         _pomodoroDbContext.TaskHistories.Add(taskHistoryEntity);
 
-        var addeddEntitesCount = await _pomodoroDbContext.SaveChangesAsync();
-        var result = _mapper.Map<TaskHistoryEntity, TaskHistory>(taskHistoryEntity);
-        return addeddEntitesCount > 0 ? result : null;
+        await _pomodoroDbContext.SaveChangesAsync();
+
+        return Result.Success();
     }
 }

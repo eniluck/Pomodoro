@@ -5,11 +5,7 @@ internal class ExceptionHandlingFilter : IExceptionFilter
 {
     public void OnException(ExceptionContext context)
     {
-        var message = context.Exception.Message;
-        if (context.Exception.InnerException != null)
-        {
-            message += $" Inner exception: {context.Exception.InnerException.Message}";
-        }
+        var message = context.Exception.ToString();
 
         var problemDetails = new ProblemDetails
         {

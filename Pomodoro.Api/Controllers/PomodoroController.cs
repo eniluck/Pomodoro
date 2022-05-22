@@ -1,22 +1,17 @@
-﻿using System.Net.Mime;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Pomodoro.Core;
 
 namespace Pomodoro.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    [Consumes(MediaTypeNames.Application.Json)]
-    [Produces(MediaTypeNames.Application.Json)]
-    public class TimerController : ControllerBase
+    public class PomodoroController : BaseController
     {
         private readonly ITimerService _timerService;
         private readonly IMapper _mapper;
-        private readonly ILogger<TimerController> _logger;
+        private readonly ILogger<PomodoroController> _logger;
 
-        public TimerController(
-            ILogger<TimerController> logger,
+        public PomodoroController(
+            ILogger<PomodoroController> logger,
             IMapper mapper,
             ITimerService timerService)
         {
@@ -28,7 +23,12 @@ namespace Pomodoro.Api.Controllers
         [HttpGet("{taskId:int}")]
         public async Task<IActionResult> Start(int taskId)
         {
-            await _timerService.StartAsync(taskId);
+            var result = await _timerService.StartAsync(taskId);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+
             return Ok();
         }
     }

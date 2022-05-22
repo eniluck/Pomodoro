@@ -1,4 +1,6 @@
-﻿namespace Pomodoro.Core.Models
+﻿using CSharpFunctionalExtensions;
+
+namespace Pomodoro.Core.Models
 {
     public record TaskModel
     {
@@ -62,18 +64,18 @@
             return (result, Array.Empty<string>());
         }
 
-        public TaskModel Start(TaskModel existedTask)
+        public Result<TaskModel> Start()
         {
-            switch (existedTask.Status)
+            switch (Status)
             {
                 case TaskStatusModel.InProgress:
-                    throw new Exception($"Задача с id = {existedTask.Id} уже выполняется");
+                    return Result.Failure<TaskModel>($"Задача с id = {Id} уже выполняется");
                 case TaskStatusModel.Ready:
-                    throw new Exception($"Задача с id = {existedTask.Id} уже выполнена");
+                    return Result.Failure<TaskModel>($"Задача с id = {Id} уже выполнена");
                 case TaskStatusModel.InList:
-                    return new TaskModel(existedTask) with { Status = TaskStatusModel.InProgress };
+                    return this with { Status = TaskStatusModel.InProgress };
                 default:
-                    throw new Exception($"Неизвестный статус текущей задачи");
+                    throw new Exception($"Неизвестный статус текущей задачи"); // TODO: подумать над внутренней ошибкой. статус + имя класса
             }
         }
     }

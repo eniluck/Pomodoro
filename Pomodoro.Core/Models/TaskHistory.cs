@@ -1,12 +1,15 @@
-﻿namespace Pomodoro.Core.Models;
+﻿using CSharpFunctionalExtensions;
+
+namespace Pomodoro.Core.Models;
 
 public record TaskHistory
 {
-    public TaskHistory(int id, TaskModel task, DateTime createDateTime, DateTime startDateTime, DateTime stopDateTime)
+    public const int POMODORO_LENGTH = 25;
+
+    private TaskHistory(int id, TaskModel task, DateTime startDateTime, DateTime stopDateTime)
     {
         Id = id;
         Task = task;
-        CreateDateTime = createDateTime;
         StartDateTime = startDateTime;
         StopDateTime = stopDateTime;
     }
@@ -22,11 +25,6 @@ public record TaskHistory
     public TaskModel Task { get; }
 
     /// <summary>
-    /// Время добавления в историю.
-    /// </summary>
-    public DateTime CreateDateTime { get; }
-
-    /// <summary>
     /// Начало выполнения задачи.
     /// </summary>
     public DateTime StartDateTime { get; }
@@ -35,4 +33,15 @@ public record TaskHistory
     /// Окончание выполнения задачи.
     /// </summary>
     public DateTime StopDateTime { get; }
+
+    public static Result<TaskHistory> Create(TaskModel task, DateTime startDateTime, DateTime stopDateTime)
+    {
+        if (stopDateTime < startDateTime)
+        {
+            return Result.Failure<TaskHistory>("Дата окончания должна быть больше даты начала");
+            // TODO: переделать чтобы было более информативно
+        }
+
+        return new TaskHistory(0, task, startDateTime, stopDateTime);
+    }
 }

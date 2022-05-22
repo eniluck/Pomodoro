@@ -7,7 +7,10 @@ dotnet ef migrations add InitialCreate --project Pomodoro.DAL.Postgres --startup
 dotnet ef migrations remove --project Pomodoro.DAL.Postgres --startup-project Pomodoro.API --context PomodoroDbContext --verbose
 
 - применить миграции к бд
-dotnet ef database update --project Pomodoro.DAL.Postgres --startup-project Pomodoro.API --context PomodoroDbContext --verbose
+dotnet ef database update --project Pomodoro.DAL.Postgres --startup-project Pomodoro.API --context PomodoroDbContext --connection "Host=localhost;Port=5432;Database=Pomodoro;Username=postgres;Password=postgres" --verbose
+
+- применить выбранную миграцию к бд
+dotnet ef database update <previous-migration-name>
 
 - удалить бд
 dotnet ef database drop --project Pomodoro.DAL.Postgres --startup-project Pomodoro.API --context PomodoroDbContext --verbose

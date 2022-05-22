@@ -15,20 +15,12 @@ public class TaskHistoryConfiguration : IEntityTypeConfiguration<TaskHistoryEnti
         builder.HasOne(x => x.Task)
             .WithMany();
 
-        builder.Property(x => x.CreateDateTime)
-            .HasColumnType("timestamp with time zone")
-            .HasDefaultValueSql("NOW()")
-            .ValueGeneratedOnAdd()
+        builder.Property(x => x.Start)
+            .HasColumnType("timestamp without time zone")
             .IsRequired();
 
-        builder.Property(x => x.StartDateTime)
-            .HasColumnType("timestamp with time zone")
+        builder.Property(x => x.Stop)
+            .HasColumnType("timestamp without time zone")
             .IsRequired();
-
-        builder.Property(x => x.StopDateTime)
-            .HasColumnType("timestamp with time zone")
-            .IsRequired();
-
-        
     }
 }

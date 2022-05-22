@@ -1,4 +1,5 @@
-﻿using Pomodoro.Core;
+﻿using CSharpFunctionalExtensions;
+using Pomodoro.Core;
 using Pomodoro.Core.Models;
 
 namespace Pomodoro.BL
@@ -8,29 +9,39 @@ namespace Pomodoro.BL
         private readonly ITaskRepository _taskRepository;
         private readonly ITaskHistoryRepository _taskHistoryRepository;
 
-        public TimerService(ITaskRepository taskRepository,
-                ITaskHistoryRepository taskHistoryRepository)
+        public TimerService(
+            ITaskRepository taskRepository,
+            ITaskHistoryRepository taskHistoryRepository)
         {
             _taskRepository = taskRepository;
             _taskHistoryRepository = taskHistoryRepository;
         }
 
-        public async Task StartAsync(int taskId)
+        public async Task<Result> StartAsync(int taskId)
         {
-            // есть ли такая задача?
             var existedTask = await _taskRepository.GetAsync(taskId);
-
             if (existedTask == null)
             {
-                throw new Exception($"Не найдена задача с id = {taskId}");
+                return Result.Failure($"Не найдена задача с id = {taskId}");
             }
 
-            var runningTask = existedTask.Start(existedTask);
-            await _taskRepository.UpdateAsync(runningTask);
+            var runningTask = existedTask.Start();
+            if (runningTask.IsFailure)
+            {
+                return runningTask;
+            }
 
-            // TODO: далее мы должны начать логировать время начала выполнения и время окончания выполнения
-            var taskHistory = new TaskHistory(0, runningTask, DateTime.UtcNow, DateTime.UtcNow, DateTime.UtcNow.AddMinutes(25));
-            await _taskHistoryRepository.AddAsync(taskHistory);
+            var pomodoro = TaskHistory.Create(
+                runningTask.Value,
+                DateTime.Now,
+                DateTime.Now.AddMinutes(TaskHistory.POMODORO_LENGTH));
+            if (pomodoro.IsFailure)
+            {
+                return pomodoro;
+            }
+
+            await _taskHistoryRepository.AddAsync(pomodoro.Value);
+            return Result.Success();
         }
     }
 }

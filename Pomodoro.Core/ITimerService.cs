@@ -1,6 +1,8 @@
-﻿namespace Pomodoro.Core;
+﻿using CSharpFunctionalExtensions;
+
+namespace Pomodoro.Core;
 
 public interface ITimerService
 {
-    public Task StartAsync(int taskId);
+    public Task<Result> StartAsync(int taskId);
 }

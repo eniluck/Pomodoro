@@ -77,16 +77,11 @@ namespace Pomodoro.DAL.Postgres.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateDateTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("NOW()");
+                    b.Property<DateTime>("Start")
+                        .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime>("StartDateTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("StopDateTime")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("Stop")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("TaskId")
                         .HasColumnType("integer");
