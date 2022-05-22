@@ -18,8 +18,30 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore Pomodoro.sln
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build Pomodoro.sln --no-restore
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test Pomodoro.UnitTests --verbosity normal
+    
+  integration-tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup PostgreSQL
+      uses: Harmon758/postgresql-action@v1.0.0
+      with:
+        postgresql db:  ${{secrets.DB_NAME}}
+        postgresql password: ${{secrets.DB_PASSWORD}}
+    - name: secretinit
+      run: dotnet user-secrets init -p Pomodoro.IntegrationTests
+    - name: secretsetup
+      run: dotnet user-secrets set ConnectionStrings:PomodoroDbContext "Host=localhost;Port=5432;Database=${{secrets.DB_NAME}};Username=postgres;Password=${{secrets.DB_PASSWORD}}" -p Pomodoro.IntegrationTests
+    - name: Test
+      run: dotnet test Pomodoro.IntegrationTests --verbosity normal
+  
